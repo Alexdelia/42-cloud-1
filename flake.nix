@@ -8,7 +8,7 @@
     disko,
     ...
   }: {
-    # nixos-anywhere --flake .#generic --generate-hardware-config nixos-generate-config ./hardware-configuration.nix <hostname>
+    # nix run nixpkgs#nixos-anywhere -- --flake .#generic --generate-hardware-config nixos-generate-config ./hardware-configuration.nix <hostname>
     nixosConfigurations.generic = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
