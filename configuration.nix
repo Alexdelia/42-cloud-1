@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -24,8 +23,8 @@
   ];
 
   users.users.root.openssh.authorizedKeys.keys = [
-    # change this to your ssh key
-    "CHANGE"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMIfTLm+mUFmMfydIkJioTceAtrN9BEXkbbhqGFjBUeL alex@jiruo"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMpZkrT0NGEbVnXwVRtuAngLlIQQkEqDHypDzDOdyOKa alex@qemu"
   ];
 
   system.stateVersion = "24.05";
