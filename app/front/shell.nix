@@ -15,6 +15,9 @@ pkgs.mkShell {
     httplz
   ];
 
-  # shellHook = ''
-  # '';
+  shellHook = ''
+    alias build="wasm-pack build --target web"
+
+    alias serve="${pkgs.httplz}/bin/httplz"
+  '';
 }
