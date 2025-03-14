@@ -7,8 +7,12 @@ pkgs.mkShell {
       # extensions = ["rust-src"];
       targets = ["wasm32-unknown-unknown"];
     })
+  ];
+
+  packages = with pkgs; [
     wasm-pack
-    cargo-generate
+
+    httplz
   ];
 
   # shellHook = ''

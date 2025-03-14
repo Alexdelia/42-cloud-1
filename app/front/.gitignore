@@ -1,0 +1,8 @@
+# cargo build output
+target/
+
+# wasm-pack build output
+pkg/
+
+# nix build output
+result
