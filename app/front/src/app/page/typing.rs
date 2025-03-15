@@ -15,17 +15,17 @@ pub fn Typing(text: ReadSignal<String>) -> impl IntoView {
 
 #[component]
 fn Field(text: ReadSignal<String>, index: ReadSignal<usize>) -> impl IntoView {
+	let t = move || text.get();
+	let max = move || t().len() - 1;
+	let i = move || index.get();
+
 	view! {
 		<div style="display: flex; justify-content: center">
-			<span>{move || text.get()[..index.get()].to_string()}</span>
+			<span>{move || t()[..i()].to_string()}</span>
 			<span style="font-weight: bold">
-				{move || {
-					text.get()[index.get()..(index.get() + 1).min(text.get().len() - 1)].to_string()
-				}}
+				{move || { t()[i()..(i() + 1).min(max())].to_string() }}
 			</span>
-			<span>
-				{move || text.get()[(index.get() + 1).min(text.get().len() - 1)..].to_string()}
-			</span>
+			<span>{move || t()[(i() + 1).min(max())..].to_string()}</span>
 		</div>
 	}
 }
