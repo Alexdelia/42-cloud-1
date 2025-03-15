@@ -1,9 +1,11 @@
 use leptos::prelude::*;
 
+use super::Animation;
+
 stylance::import_crate_style!(style, "src/app/page/typing/wrong_key_animation.module.css");
 
 #[component]
-pub fn WrongKeyAnimations(animations: ReadSignal<Vec<(String, usize)>>) -> impl IntoView {
+pub fn WrongKeyAnimations(animations: ReadSignal<Vec<Animation>>) -> impl IntoView {
 	view! {
 		<div class=style::animation_container>
 			<For
