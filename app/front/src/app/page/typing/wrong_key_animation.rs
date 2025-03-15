@@ -13,9 +13,7 @@ pub fn WrongKeyAnimations(animations: ReadSignal<Vec<(String, usize)>>) -> impl 
 					view! {
 						<div
 							class=style::wrong_key_animation
-							style=format!(
-								"z-index: {}", 8 + id
-							)
+							style=format!("z-index: {}", 8 + id)
 						>
 							{key}
 						</div>

@@ -28,6 +28,7 @@ pub fn Typing() -> impl IntoView {
 			>
 				<field::Field text=text index=index />
 
+				// TODO: progress bar styling
 				<progress max=move || text.get().len() - 1 value=index />
 			</Show>
 		</div>
