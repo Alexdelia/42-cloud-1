@@ -18,6 +18,7 @@ pub fn App() -> impl IntoView {
 	*/
 
 	let (text, set_text) = signal("Hello, World!".to_string());
+	// let (text, set_text) = signal("".to_string());
 
 	view! { <page::Typing text=text /> }
 }
