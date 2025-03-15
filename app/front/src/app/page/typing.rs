@@ -1,3 +1,4 @@
+use leptos::ev::KeyboardEvent;
 use leptos::prelude::*;
 
 stylance::import_crate_style!(style, "src/app/page/typing.module.scss");
@@ -5,6 +6,17 @@ stylance::import_crate_style!(style, "src/app/page/typing.module.scss");
 #[component]
 pub fn Typing(text: ReadSignal<String>) -> impl IntoView {
 	let (index, set_index) = signal(0usize);
+	let window = window();
+	let on_keydown = Closure::wrap(Box::new(move |event: KeyboardEvent| {
+		log!("Key pressed: {:?}", event.key());
+		// if event.key() == " " {
+		// set_index.set((index.get() + 1) % text.get().len())
+		// }
+	}) as Box<dyn FnMut(_)>);
+	window
+		.add_event_listener_with_callback("keypress", on_keydown.as_ref().unchecked_ref())
+		.expect("Failed to add event listener");
+	closure.forget();
 
 	view! {
 		<div class=style::container>
