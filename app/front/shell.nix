@@ -11,6 +11,8 @@ pkgs.mkShell {
 
   packages = with pkgs; [
     trunk
+
+    leptosfmt
   ];
 
   shellHook = let
