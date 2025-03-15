@@ -8,3 +8,4 @@ version = "0.2.0"
 [dependencies]
 console_error_panic_hook = "0.1.7"
 leptos = { version = "0.7.7", features = ["csr"] }
+reqwest = "0.12.14"
