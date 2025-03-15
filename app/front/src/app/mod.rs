@@ -17,7 +17,7 @@ pub fn App() -> impl IntoView {
 	}
 	*/
 
-	let (text, set_text) = signal("Hello, World!".to_string());
+	let (text, set_text) = signal("If this is all it takes to tear us apart, then maybe we weren't all that close to begin with.".to_string().replace(" ", "_"));
 	// let (text, set_text) = signal("".to_string());
 
 	view! { <page::Typing text=text /> }

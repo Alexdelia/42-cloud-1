@@ -11,6 +11,7 @@ pkgs.mkShell {
 
   packages = with pkgs; [
     trunk
+    stylance-cli
 
     leptosfmt
   ];

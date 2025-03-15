@@ -3,6 +3,8 @@ target/
 
 # trunk build output
 dist/
+## stylance build output
+/index.css
 
 # nix build output
 result
