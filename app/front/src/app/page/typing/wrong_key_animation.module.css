@@ -1,18 +1,3 @@
-.container {
-	width: 100vw;
-	height: 100vh;
-
-	margin: 0;
-	padding: 0;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-
-	background-color: hsl(0, 0%, 20%);
-}
-
 .animation_container {
 	position: absolute;
 	width: 100%;
@@ -28,9 +13,9 @@
 
 	text-align: center;
 
-	font-family: 'Rubik Pixels', monospace;
+	font-family: 'Syne Mono', monospace;
 	font-size: 7rem;
-	// font-weight: bold;
+	font-weight: bold;
 
 	animation: grow-rotate-fall 1s ease-out forwards;
 }

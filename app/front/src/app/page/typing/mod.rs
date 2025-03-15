@@ -1,8 +1,9 @@
 use leptos::prelude::*;
 mod field;
 mod on_keydown;
+mod wrong_key_animation;
 
-stylance::import_crate_style!(style, "src/app/page/typing/style.module.scss");
+stylance::import_crate_style!(style, "src/app/page/typing/style.module.css");
 
 #[component]
 pub fn Typing() -> impl IntoView {
@@ -31,30 +32,6 @@ pub fn Typing() -> impl IntoView {
 			</Show>
 		</div>
 
-		<WrongKeyAnimations animations=animations />
-	}
-}
-
-#[component]
-fn WrongKeyAnimations(animations: ReadSignal<Vec<(String, usize)>>) -> impl IntoView {
-	view! {
-		<div class=style::animation_container>
-			<For
-				each=move || animations.get()
-				key=|(_, id)| *id
-				children=move |(key, id)| {
-					view! {
-						<div
-							class=style::wrong_key_animation
-							style=format!(
-								"z-index: {}", 8 + id
-							)
-						>
-							{key}
-						</div>
-					}
-				}
-			/>
-		</div>
+		<wrong_key_animation::WrongKeyAnimations animations=animations />
 	}
 }

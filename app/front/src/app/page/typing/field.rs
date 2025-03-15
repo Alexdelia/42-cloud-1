@@ -1,6 +1,6 @@
 use leptos::prelude::*;
 
-stylance::import_crate_style!(style, "src/app/page/typing/field.module.scss");
+stylance::import_crate_style!(style, "src/app/page/typing/field.module.css");
 
 const VISIBLE_CHAR_RADIUS: usize = 16;
 
