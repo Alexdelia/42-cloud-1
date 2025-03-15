@@ -27,7 +27,7 @@ pub fn set_event_listener(
 			leptos::logging::log!("Key pressed: '{key}' != '{target}'");
 
 			let id = animation_id.get();
-			animation_id.update(|id| *id += 1);
+			animation_id.update(|id| *id = (*id + 1) % u32::MAX as usize);
 			set_animations.update(|animations| animations.push((key.clone(), id)));
 			set_timeout(
 				move || {

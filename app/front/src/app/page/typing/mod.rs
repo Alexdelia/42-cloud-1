@@ -28,10 +28,10 @@ pub fn Typing() -> impl IntoView {
 				<field::Field text=text index=index />
 
 				<progress max=move || text.get().len() - 1 value=index />
-
-				<WrongKeyAnimations animations=animations />
 			</Show>
 		</div>
+
+		<WrongKeyAnimations animations=animations />
 	}
 }
 
@@ -42,12 +42,12 @@ fn WrongKeyAnimations(animations: ReadSignal<Vec<(String, usize)>>) -> impl Into
 			<For
 				each=move || animations.get()
 				key=|(_, id)| *id
-				children=move |(key, _)| {
+				children=move |(key, id)| {
 					view! {
 						<div
 							class=style::wrong_key_animation
 							style=format!(
-								"left: 50vw; top: 70vh",
+								"z-index: {}", 8 + id
 							)
 						>
 							{key}
