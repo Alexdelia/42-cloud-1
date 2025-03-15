@@ -1,5 +1,3 @@
-use core::num::Saturating;
-
 use leptos::prelude::*;
 
 stylance::import_crate_style!(style, "src/app/page/typing.module.scss");
@@ -25,7 +23,7 @@ pub fn Typing(text: ReadSignal<String>) -> impl IntoView {
 	}
 }
 
-const VISIBLE_CHAR_RADIUS: usize = 8;
+const VISIBLE_CHAR_RADIUS: usize = 16;
 
 #[component]
 fn Field(text: ReadSignal<String>, index: ReadSignal<usize>) -> impl IntoView {
@@ -38,18 +36,16 @@ fn Field(text: ReadSignal<String>, index: ReadSignal<usize>) -> impl IntoView {
 			class=style::typing_field
 			style="display: flex; justify-content: center"
 		>
-			<span style=format!(
-				"width: {VISIBLE_CHAR_RADIUS}rem; text-align: right; color: green",
-			)>
+			<span class=style::prev>
 				{move || {
 					t()[(i().saturating_sub(VISIBLE_CHAR_RADIUS))..i()]
 						.to_string()
 				}}
 			</span>
-			<span style="color: red">
+			<span class=style::current>
 				{move || { t()[i()..(i() + 1).min(max())].to_string() }}
 			</span>
-			<span>
+			<span class=style::next>
 				{move || {
 					t()[(i() + 1)
 							.min(max())..(i() + VISIBLE_CHAR_RADIUS).min(max())]
