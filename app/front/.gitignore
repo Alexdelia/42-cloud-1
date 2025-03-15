@@ -1,8 +1,8 @@
 # cargo build output
 target/
 
-# wasm-pack build output
-pkg/
+# trunk build output
+dist/
 
 # nix build output
 result

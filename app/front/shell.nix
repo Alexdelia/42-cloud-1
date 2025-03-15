@@ -10,14 +10,17 @@ pkgs.mkShell {
   ];
 
   packages = with pkgs; [
-    wasm-pack
-
-    httplz
+    trunk
   ];
 
-  shellHook = ''
-    alias build="wasm-pack build --target web"
-
-    alias serve="${pkgs.httplz}/bin/httplz"
-  '';
+  shellHook = let
+    serve = "${pkgs.trunk}/bin/trunk serve";
+  in
+    /*
+    bash
+    */
+    ''
+      alias serve="${serve}"
+      alias open="${serve} --open"
+    '';
 }
