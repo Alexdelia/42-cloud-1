@@ -2,30 +2,28 @@ use leptos::prelude::*;
 
 use crate::app::page::typing::Stats;
 
-stylance::import_crate_style!(style, "src/app/page/typing/stats/ongoing.module.css");
-
 #[component]
 pub fn Ongoing(stats: ReadSignal<Stats>) -> impl IntoView {
 	view! {
-		<div class=style::container>
-			<div class=style::item style="right: calc(50vw + 3rem)">
+		<div class="stats_ongoing_container">
+			<div class="item" style="right: calc(50vw + 3rem)">
 				<span
-					class=style::value
+					class="value"
 					style=move || { wpm_gradient(stats.get().wpm()) }
 				>
 					{move || format!("{:.1}", stats.get().wpm())}
 				</span>
-				<span class=style::unit>wpm</span>
+				<span class="unit">wpm</span>
 			</div>
 
-			<div class=style::item style="right: calc(50vw - 18rem)">
+			<div class="item" style="right: calc(50vw - 18rem)">
 				<span
-					class=style::value
+					class="value"
 					style=move || { accuracy_gradient(stats.get().accuracy()) }
 				>
 					{move || format!("{:.2}%", stats.get().accuracy())}
 				</span>
-				<span class=style::unit>accuracy</span>
+				<span class="unit">accuracy</span>
 			</div>
 		</div>
 	}
