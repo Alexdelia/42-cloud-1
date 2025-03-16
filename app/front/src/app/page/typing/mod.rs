@@ -1,43 +1,73 @@
-use chrono::{DateTime, Utc};
-use leptos::prelude::*;
 mod field;
 mod on_keydown;
 mod progress;
-mod query_quote;
+// mod query_quote;
 mod stats;
 mod wrong_key_animation;
 
+use chrono::{DateTime, Utc};
+use leptos::{prelude::*, task::spawn_local};
+use serde::{Deserialize, Serialize};
+use server_fn::codec::GetUrl;
+
 stylance::import_crate_style!(style, "src/app/page/typing/style.module.css");
 
-#[derive(Default, Clone)]
-struct Quote {
+#[derive(Default, Clone, Serialize, Deserialize, Debug)]
+pub struct Quote {
 	text: String,
 
 	character: String,
 	anime: Anime,
 }
 
-#[derive(Default, Clone)]
-struct Anime {
+#[derive(Default, Clone, Serialize, Deserialize, Debug)]
+pub struct Anime {
 	name: String,
 	alt_name: String,
 }
 
 type Animation = (char, usize);
 
+pub async fn query_quote() -> Quote {
+	let URL: &str = "https://animechan.io/api/v1/quotes/random";
+
+	let res = reqwest::get(URL).await;
+
+	leptos::logging::log!("res: {:?}", res);
+
+	Quote {
+		text: "yes".to_string(),
+		character: "Yukino Yukinoshita".to_string(),
+		anime: Anime {
+			name: "Oregairu".to_string(),
+			alt_name: "My Teen Romantic Comedy SNAFU".to_string(),
+		},
+	}
+}
+
 #[component]
 pub fn Typing() -> impl IntoView {
-	let (quote, set_quote) = signal(Quote::default());
-	let new_quote = RwSignal::new(0u8);
+	let (quote, set_quote) = signal(None);
+	let (new_quote_requested, trigger_new_quote) = signal(0u8);
 	let (index, set_index) = signal(0usize);
 	let (stats, set_stats) = signal(Stats::default());
 	let (animations, set_animations) = signal(Vec::<Animation>::new());
 	let animation_id = RwSignal::new(0usize);
 
+	// let quote = Resource::new(
+	// move || new_quote_requested.get(),
+	// |_| query_quote::query_quote(),
+	// );
+	// let quote = fetch_data();
+
 	Effect::watch(
-		move || new_quote.get(),
+		move || new_quote_requested.get(),
 		move |_, _, _| {
-			set_quote.set(query_quote::query_quote());
+			let quote_resource = LocalResource::new(move || query_quote());
+			if let Some(quote) = quote_resource.get().as_deref() {
+				set_quote.set(Some(quote.clone()));
+			}
+			// spawn_local(async move { set_quote.set(Some(query_quote().await.unwrap())) });
 			set_index.set(0);
 			set_stats.update(|stats| *stats = Stats::default());
 		},
@@ -45,8 +75,8 @@ pub fn Typing() -> impl IntoView {
 	);
 
 	on_keydown::set_event_listener(
-		quote.clone(),
-		new_quote,
+		quote,
+		trigger_new_quote.clone(),
 		index.clone(),
 		set_index,
 		stats.clone(),
@@ -58,7 +88,7 @@ pub fn Typing() -> impl IntoView {
 	view! {
 		<div class=style::container>
 			<Show
-				when=move || { !quote.get().text.is_empty() }
+				when=move || { !quote.get().is_none() }
 				fallback=|| view! { <p>"Finding a cool quote..."</p> }
 			>
 				<stats::Ongoing stats=stats />
@@ -67,7 +97,7 @@ pub fn Typing() -> impl IntoView {
 
 				<progress::Progress
 					value=index
-					max=quote.get().text.len()
+					max=quote.get().unwrap().text.len()
 				/>
 			</Show>
 		</div>
@@ -75,6 +105,9 @@ pub fn Typing() -> impl IntoView {
 		<wrong_key_animation::WrongKeyAnimations animations=animations />
 	}
 }
+
+// unsafe impl Send for Quote {}
+// unsafe impl Sync for Quote {}
 
 #[derive(Clone)]
 struct Stats {

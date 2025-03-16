@@ -4,8 +4,8 @@ use leptos::prelude::*;
 use super::{Animation, Quote, Stats};
 
 pub fn set_event_listener(
-	quote: ReadSignal<Quote>,
-	new_quote: RwSignal<u8>,
+	quote: ReadSignal<Option<Quote>>,
+	trigger_new_quote: WriteSignal<u8>,
 	index: ReadSignal<usize>,
 	set_index: WriteSignal<usize>,
 	stats: ReadSignal<Stats>,
@@ -14,7 +14,11 @@ pub fn set_event_listener(
 	animation_id: RwSignal<usize>,
 ) {
 	let handle = window_event_listener(leptos::ev::keydown, move |event| {
-		let text = quote.get().text;
+		let Some(quote) = quote.get() else {
+			leptos::logging::log!("no quote to type");
+			return;
+		};
+		let text = quote.text;
 		let index = index.get();
 
 		let over = text.len() <= index;
@@ -22,7 +26,7 @@ pub fn set_event_listener(
 		let key = event.key();
 		if key.len() != 1 {
 			if (over && key == "Enter") || key == "Escape" {
-				new_quote.update(|n| *n = (*n + 1) % u8::MAX);
+				trigger_new_quote.update(|n| *n = (*n + 1) % u8::MAX);
 			}
 			return;
 		}
