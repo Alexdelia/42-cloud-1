@@ -1,0 +1,40 @@
+progress {
+	height: 1.25rem;
+	width: 16rem;
+	max-width: 40vw;
+
+	transition: all 300ms ease-out;
+
+	background-color: #000;
+	border-radius: 42rem;
+	color: #000;
+
+	overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+	transition: all 300ms ease-out;
+
+	background-color: hsl(0, 0%, 30%);
+	border-radius: 42rem;
+
+	overflow: hidden;
+}
+
+progress::-webkit-progress-value {
+	transition: all 300ms ease-out;
+
+	background-color: hsl(0, 0%, 50%);
+	border-radius: 42rem;
+
+	overflow: hidden;
+}
+
+progress::-moz-progress-bar {
+	transition: all 300ms ease-out;
+
+	background-color: hsl(0, 0%, 50%);
+	border-radius: 42rem;
+
+	overflow: hidden;
+}

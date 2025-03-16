@@ -2,6 +2,7 @@ use chrono::{DateTime, Utc};
 use leptos::prelude::*;
 mod field;
 mod on_keydown;
+mod progress;
 mod stats;
 mod wrong_key_animation;
 
@@ -37,8 +38,7 @@ pub fn Typing() -> impl IntoView {
 
 				<field::Field text=text index=index />
 
-				// TODO: progress bar styling
-				<progress max=move || text.get().len() - 1 value=index />
+				<progress::Progress text=text index=index />
 			</Show>
 		</div>
 
