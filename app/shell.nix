@@ -1,27 +1,43 @@
-{pkgs ? import <nixpkgs> {}}:
-pkgs.mkShell {
-  buildInputs = with pkgs; [
-    openssl
-    pkg-config
-    (rust-bin.stable.latest.default.override {
-      # extensions = ["rust-src"];
-      targets = ["wasm32-unknown-unknown"];
-    })
-  ];
+{
+  pkgs,
+  inputs,
+}: let
+  pre-commit-check = inputs.pre-commit-hooks.lib.${pkgs.system}.run {
+    src = ./.;
+    hooks = {
+      typos.enable = true;
 
-  packages = with pkgs; [
-    cargo-leptos
-    sass
+      # check-toml.enable = true;
+    };
+  };
+in
+  pkgs.mkShell {
+    buildInputs = with pkgs;
+      [
+        openssl
+        pkg-config
+        (rust-bin.stable.latest.default.override {
+          # extensions = ["rust-src"];
+          targets = ["wasm32-unknown-unknown"];
+        })
+      ]
+      ++ pre-commit-check.buildInputs;
 
-    leptosfmt
-  ];
+    packages = with pkgs; [
+      cargo-leptos
+      sass
 
-  shellHook =
-    /*
-    bash
-    */
-    ''
-      alias serve="cargo leptos serve"
-      alias watch="cargo leptos watch"
-    '';
-}
+      leptosfmt
+    ];
+
+    shellHook =
+      /*
+      bash
+      */
+      ''
+        ${pre-commit-check.shellHook}
+
+        alias serve="cargo leptos serve"
+        alias watch="cargo leptos watch"
+      '';
+  }
