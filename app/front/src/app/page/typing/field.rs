@@ -1,13 +1,15 @@
 use leptos::prelude::*;
 
+use super::Quote;
+
 stylance::import_crate_style!(style, "src/app/page/typing/field.module.css");
 
 const VISIBLE_CHAR_RADIUS: usize = 16;
 
 #[component]
-pub fn Field(text: ReadSignal<String>, index: ReadSignal<usize>) -> impl IntoView {
-	let t = move || text.get();
-	let max = move || text.get().len();
+pub fn Field(quote: ReadSignal<Quote>, index: ReadSignal<usize>) -> impl IntoView {
+	let t = move || quote.get().text;
+	let max = move || t().len();
 	let i = move || index.get();
 
 	view! {

@@ -3,23 +3,50 @@ use leptos::prelude::*;
 mod field;
 mod on_keydown;
 mod progress;
+mod query_quote;
 mod stats;
 mod wrong_key_animation;
 
 stylance::import_crate_style!(style, "src/app/page/typing/style.module.css");
 
+#[derive(Default, Clone)]
+struct Quote {
+	text: String,
+
+	character: String,
+	anime: Anime,
+}
+
+#[derive(Default, Clone)]
+struct Anime {
+	name: String,
+	alt_name: String,
+}
+
 type Animation = (char, usize);
 
 #[component]
 pub fn Typing() -> impl IntoView {
-	let (text, set_text) = signal("If this is all it takes to tear us apart, then maybe we weren't all that close to begin with.".to_string().replace(" ", "_"));
+	let (quote, set_quote) = signal(Quote::default());
+	let new_quote = RwSignal::new(0u8);
 	let (index, set_index) = signal(0usize);
 	let (stats, set_stats) = signal(Stats::default());
 	let (animations, set_animations) = signal(Vec::<Animation>::new());
 	let animation_id = RwSignal::new(0usize);
 
+	Effect::watch(
+		move || new_quote.get(),
+		move |_, _, _| {
+			set_quote.set(query_quote::query_quote());
+			set_index.set(0);
+			set_stats.update(|stats| *stats = Stats::default());
+		},
+		true,
+	);
+
 	on_keydown::set_event_listener(
-		text.clone(),
+		quote.clone(),
+		new_quote,
 		index.clone(),
 		set_index,
 		stats.clone(),
@@ -31,14 +58,17 @@ pub fn Typing() -> impl IntoView {
 	view! {
 		<div class=style::container>
 			<Show
-				when=move || { !text.get().is_empty() }
+				when=move || { !quote.get().text.is_empty() }
 				fallback=|| view! { <p>"Finding a cool quote..."</p> }
 			>
 				<stats::Ongoing stats=stats />
 
-				<field::Field text=text index=index />
+				<field::Field quote=quote index=index />
 
-				<progress::Progress text=text index=index />
+				<progress::Progress
+					value=index
+					max=quote.get().text.len()
+				/>
 			</Show>
 		</div>
 
@@ -49,7 +79,7 @@ pub fn Typing() -> impl IntoView {
 #[derive(Clone)]
 struct Stats {
 	start_time: DateTime<Utc>,
-	end_time: Option<DateTime<Utc>>,
+	end_time: DateTime<Utc>,
 
 	correct_key: usize,
 	wrong_key: usize,
@@ -59,7 +89,7 @@ impl Default for Stats {
 	fn default() -> Self {
 		Self {
 			start_time: Utc::now(),
-			end_time: None,
+			end_time: Utc::now(),
 
 			correct_key: 0,
 			wrong_key: 0,
@@ -74,7 +104,7 @@ impl Stats {
 			return 0.0;
 		}
 
-		let duration = self.end_time.unwrap_or(Utc::now()) - self.start_time;
+		let duration = self.end_time - self.start_time;
 		let minutes = duration.num_milliseconds() as f64 / 1000.0 / 60.0;
 		if minutes == 0.0 {
 			return 0.0;

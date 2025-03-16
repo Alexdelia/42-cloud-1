@@ -1,10 +1,11 @@
 use chrono::Utc;
 use leptos::prelude::*;
 
-use super::{Animation, Stats};
+use super::{Animation, Quote, Stats};
 
 pub fn set_event_listener(
-	text: ReadSignal<String>,
+	quote: ReadSignal<Quote>,
+	new_quote: RwSignal<u8>,
 	index: ReadSignal<usize>,
 	set_index: WriteSignal<usize>,
 	stats: ReadSignal<Stats>,
@@ -13,19 +14,30 @@ pub fn set_event_listener(
 	animation_id: RwSignal<usize>,
 ) {
 	let handle = window_event_listener(leptos::ev::keydown, move |event| {
-		let text = text.get();
+		let text = quote.get().text;
+		let index = index.get();
+
+		let over = text.len() <= index;
 
 		let key = event.key();
 		if key.len() != 1 {
+			if (over && key == "Enter") || key == "Escape" {
+				new_quote.update(|n| *n = (*n + 1) % u8::MAX);
+			}
 			return;
 		}
+
+		if text.is_empty() || over {
+			return;
+		}
+		set_stats.update(|stats| stats.end_time = Utc::now());
+
 		let mut key = key.chars().next().expect("Key is empty");
 
 		if key == ' ' {
 			key = '_';
 		}
 
-		let index = index.get();
 		let target = text.chars().nth(index).expect("Index out of bounds");
 
 		let stats = stats.get();
@@ -36,11 +48,7 @@ pub fn set_event_listener(
 			return;
 		}
 
-		if index + 1 == text.len() {
-			set_stats.update(|stats| stats.end_time = Some(Utc::now()));
-		}
-
-		set_index.set((index + 1) % text.len());
+		set_index.set(index + 1);
 
 		if new_key {
 			set_stats.update(|stats| stats.correct_key += 1);
