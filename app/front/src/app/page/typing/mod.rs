@@ -2,6 +2,7 @@ use chrono::{DateTime, Utc};
 use leptos::prelude::*;
 mod field;
 mod on_keydown;
+mod stats;
 mod wrong_key_animation;
 
 stylance::import_crate_style!(style, "src/app/page/typing/style.module.css");
@@ -32,13 +33,8 @@ pub fn Typing() -> impl IntoView {
 				when=move || { !text.get().is_empty() }
 				fallback=|| view! { <p>"Finding a cool quote..."</p> }
 			>
-				<p>
-					<span>{move || {
-				let s = stats.get();
-				format!("WPM: {:.2}", if s.key_count() > 1 {s.wpm()} else {0.0})
-			}}</span>
-					<span>{move || format!("Accuracy: {:.2}%", stats.get().accuracy())}</span>
-				</p>
+				<stats::Ongoing stats=stats />
+
 				<field::Field text=text index=index />
 
 				// TODO: progress bar styling
@@ -89,6 +85,9 @@ impl Stats {
 	}
 
 	pub fn accuracy(&self) -> f64 {
+		if self.wrong_key == 0 {
+			return 100.0;
+		}
 		if self.correct_key == 0 {
 			return 0.0;
 		}

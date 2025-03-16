@@ -12,6 +12,7 @@
 
 	.prev {
 		color: #111;
+		opacity: 0.5;
 		text-align: right;
 		text-overflow: clip;
 		overflow: hidden;
