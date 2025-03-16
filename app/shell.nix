@@ -10,20 +10,18 @@ pkgs.mkShell {
   ];
 
   packages = with pkgs; [
-    trunk
-    stylance-cli
+    cargo-leptos
+    sass
 
     leptosfmt
   ];
 
-  shellHook = let
-    serve = "${pkgs.trunk}/bin/trunk serve";
-  in
+  shellHook =
     /*
     bash
     */
     ''
-      alias serve="${serve}"
-      alias open="${serve} --open"
+      alias serve="cargo leptos serve"
+      alias watch="cargo leptos watch"
     '';
 }
