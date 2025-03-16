@@ -2,6 +2,7 @@ mod field;
 mod on_keydown;
 mod progress;
 // mod query_quote;
+mod stats;
 mod wrong_key_animation;
 
 use crate::schema::{
@@ -9,8 +10,6 @@ use crate::schema::{
 	stats::Stats,
 };
 use leptos::prelude::*;
-
-stylance::import_crate_style!(style, "src/app/page/typing/style.module.css");
 
 type Animation = (char, usize);
 
@@ -53,7 +52,7 @@ pub fn Typing() -> impl IntoView {
 	);
 
 	view! {
-		<div class=style::container>
+		<div class="page_typing_container">
 			<Show
 				when=move || { !quote.get().is_none() }
 				fallback=|| view! { <p>"Finding a cool quote..."</p> }

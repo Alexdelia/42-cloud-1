@@ -4,7 +4,24 @@ Sono
 Syne Mono
 */
 
+$background-color: hsl(0, 0%, 20%);
+
 body {
 	font-family: sans-serif;
 	text-align: center;
+}
+
+.page_typing_container {
+	width: 100vw;
+	height: 100vh;
+
+	margin: 0;
+	padding: 0;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	background-color: $background-color;
 }
