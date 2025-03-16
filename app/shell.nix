@@ -7,7 +7,13 @@
     hooks = {
       typos.enable = true;
 
-      # check-toml.enable = true;
+      check-toml.enable = true;
+
+      clippy = {
+        enable = false;
+        stages = ["pre-push"];
+      };
+      rustfmt.enable = true;
     };
   };
 in
