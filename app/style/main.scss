@@ -25,3 +25,41 @@ body {
 
 	background-color: $background-color;
 }
+
+.typing_field {
+	width: 100vw;
+	height: 12.5rem;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	font-family: 'Sono', monospace;
+	font-size: 5rem;
+
+	.prev {
+		color: #111;
+		opacity: 0.5;
+		text-align: right;
+		text-overflow: clip;
+		overflow: hidden;
+		min-width: 0;
+		flex: 1;
+	}
+
+	.current {
+		color: white;
+		text-align: center;
+		flex: 0 1 auto;
+	}
+
+	.next {
+		color: gray;
+		text-align: left;
+		text-overflow: clip;
+		overflow: hidden;
+		min-width: 0;
+		flex: 1;
+	}
+}

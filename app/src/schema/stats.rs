@@ -2,11 +2,11 @@ use chrono::{DateTime, Utc};
 
 #[derive(Clone)]
 pub struct Stats {
-	start_time: DateTime<Utc>,
-	end_time: DateTime<Utc>,
+	pub start_time: DateTime<Utc>,
+	pub end_time: DateTime<Utc>,
 
-	correct_key: usize,
-	wrong_key: usize,
+	pub correct_key: usize,
+	pub wrong_key: usize,
 }
 
 impl Default for Stats {
