@@ -1,30 +1,13 @@
 /* TODO: split in multiple files */
 
+@use "var";
+@use "page_typing";
 @use "progress";
 
 @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Sono:wght@200..800&family=Syne+Mono&display=swap");
 
-$background-color: hsl(0, 0%, 20%);
-
 body {
 	all: unset;
-}
-
-//
-
-.page_typing_container {
-	width: 100vw;
-	height: 100vh;
-
-	margin: 0;
-	padding: 0;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-
-	background-color: $background-color;
 }
 
 //
@@ -107,7 +90,7 @@ body {
 	100% {
 		transform: scale(1) rotate(20deg) translateY(4rem) translateX(2rem);
 		color: hsl(0, 0, 0);
-		text-shadow: 0 0 0.5rem $background-color;
+		text-shadow: 0 0 0.5rem var.$background-color;
 		opacity: -0.5;
 	}
 }
