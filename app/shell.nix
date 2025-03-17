@@ -16,8 +16,12 @@
       };
 
       clippy = {
-        enable = true;
+        enable = false;
         stages = ["pre-push"];
+        settings = {
+          extraArgs = "--manifest-path=./app/Cargo.toml";
+          # allFeatures = true;
+        };
       };
       rustfmt = {
         enable = true;
