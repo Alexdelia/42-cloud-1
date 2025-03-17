@@ -16,7 +16,7 @@
       };
 
       clippy = {
-        enable = false;
+        enable = true;
         stages = ["pre-push"];
       };
       rustfmt = {
