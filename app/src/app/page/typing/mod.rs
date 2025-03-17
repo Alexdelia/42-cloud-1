@@ -5,10 +5,7 @@ mod query_quote;
 mod stats;
 mod wrong_key_animation;
 
-use crate::schema::{
-	quote::{Anime, Quote},
-	stats::Stats,
-};
+use crate::schema::{quote::Quote, stats::Stats};
 use leptos::prelude::*;
 
 type Animation = (char, usize);
@@ -37,10 +34,10 @@ pub fn Typing() -> impl IntoView {
 
 	on_keydown::set_event_listener(
 		quote,
-		trigger_new_quote.clone(),
-		index.clone(),
+		trigger_new_quote,
+		index,
 		set_index,
-		stats.clone(),
+		stats,
 		set_stats,
 		set_animations,
 		animation_id,

@@ -4,9 +4,9 @@ use leptos::prelude::*;
 use serde::Deserialize;
 
 #[cfg(feature = "ssr")]
-use super::Anime;
+use crate::schema::quote::Anime;
 
-use super::Quote;
+use crate::schema::quote::Quote;
 
 #[cfg(feature = "ssr")]
 const URL: &str = "https://animechan.io/api/v1/quotes/random";
