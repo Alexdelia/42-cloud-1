@@ -5,15 +5,29 @@
   pre-commit-check = inputs.pre-commit-hooks.lib.${pkgs.system}.run {
     src = ./.;
     hooks = {
-      typos.enable = true;
+      typos = {
+        enable = true;
+        stages = ["pre-commit"];
+      };
 
-      check-toml.enable = true;
+      check-toml = {
+        enable = true;
+        stages = ["pre-commit"];
+      };
 
       clippy = {
         enable = false;
         stages = ["pre-push"];
       };
-      rustfmt.enable = true;
+      rustfmt = {
+        enable = true;
+        stages = ["pre-commit"];
+      };
+
+      prettier = {
+        enable = true;
+        stages = ["pre-commit"];
+      };
     };
   };
 in
@@ -34,6 +48,7 @@ in
       sass
 
       leptosfmt
+      nodePackages.prettier
     ];
 
     shellHook =
@@ -45,5 +60,7 @@ in
 
         alias serve="cargo leptos serve"
         alias watch="cargo leptos watch"
+
+        alias fmt="leptosfmt ./src/**/*.rs && prettier --write ./style/**/*css --cache --log-level=warn"
       '';
   }
