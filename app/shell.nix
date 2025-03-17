@@ -45,7 +45,7 @@ in
 
     packages = with pkgs; [
       cargo-leptos
-      sass
+      dart-sass
 
       leptosfmt
       nodePackages.prettier
