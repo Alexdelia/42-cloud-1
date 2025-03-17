@@ -1,32 +1,51 @@
 use leptos::prelude::*;
+
+#[cfg(feature = "ssr")]
 use serde::Deserialize;
 
-use super::{Anime, Quote};
+#[cfg(feature = "ssr")]
+use super::Anime;
 
+use super::Quote;
+
+#[cfg(feature = "ssr")]
 const URL: &str = "https://animechan.io/api/v1/quotes/random";
 
-#[derive(Deserialize, Debug, Clone)]
+#[cfg(feature = "ssr")]
+#[derive(Default, Deserialize, Debug, Clone)]
 struct QuoteResponse {
 	data: Option<Quote>,
 	message: Option<String>,
+}
+
+#[cfg(feature = "ssr")]
+impl Into<Quote> for QuoteResponse {
+	fn into(self) -> Quote {
+		let Some(quote) = self.data else {
+			return Quote {
+                text: "If this is all it takes to tear us apart, then maybe we weren't all that close to begin with.".to_string().replace(" ", "_"),
+                character: "Yukino Yukinoshita".to_string(),
+                anime: Anime {
+                    name: "Oregairu".to_string(),
+                    alt_name: "My Teen Romantic Comedy SNAFU".to_string(),
+                },
+            };
+		};
+
+		Quote {
+			text: quote.text.replace(" ", "_"),
+			..quote
+		}
+	}
 }
 
 #[server]
 pub async fn query_quote() -> Result<Quote, ServerFnError> {
 	let res = reqwest::get(URL).await;
 
-	let default = Ok(Quote {
-        text: "If this is all it takes to tear us apart, then maybe we weren't all that close to begin with.".to_string().replace(" ", "_"),
-		character: "Yukino Yukinoshita".to_string(),
-		anime: Anime {
-			name: "Oregairu".to_string(),
-			alt_name: "My Teen Romantic Comedy SNAFU".to_string(),
-		},
-	});
-
 	let Ok(res) = res else {
 		leptos::logging::log!("error fetching quote:\n{res:#?}");
-		return default;
+		return Ok(QuoteResponse::default().into());
 	};
 
 	let res = res.json::<QuoteResponse>().await;
@@ -34,16 +53,16 @@ pub async fn query_quote() -> Result<Quote, ServerFnError> {
 
 	let Ok(res) = res else {
 		leptos::logging::log!("error parsing quote:\n{res:#?}",);
-		return default;
+		return Ok(QuoteResponse::default().into());
 	};
 
-	let Some(quote) = res.data else {
+	if res.data.is_none() {
 		leptos::logging::log!(
 			"error parsing inner quote: '{message}'\n{res:#?}",
 			message = res.clone().message.unwrap_or_else(|| "None".to_string()),
 		);
-		return default;
+		return Ok(QuoteResponse::default().into());
 	};
 
-	Ok(quote)
+	Ok(res.into())
 }
