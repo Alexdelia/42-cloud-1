@@ -5,8 +5,17 @@ use super::Quote;
 const VISIBLE_CHAR_RADIUS: usize = 16;
 
 #[component]
-pub fn Field(quote: ReadSignal<Option<Quote>>, index: ReadSignal<usize>) -> impl IntoView {
-	let t = move || quote.get().expect("Quote is empty").text;
+pub fn Field(
+	quote: Resource<Result<Quote, ServerFnError>>,
+	index: ReadSignal<usize>,
+) -> impl IntoView {
+	let t = move || {
+		quote
+			.get()
+			.expect("Quote is empty")
+			.expect("Quote is error")
+			.text
+	};
 	let max = t().len();
 	let i = move || index.get();
 

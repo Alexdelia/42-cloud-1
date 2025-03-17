@@ -4,7 +4,7 @@ use leptos::prelude::*;
 use super::{Animation, Quote, Stats};
 
 pub fn set_event_listener(
-	quote: ReadSignal<Option<Quote>>,
+	quote: Resource<Result<Quote, ServerFnError>>,
 	trigger_new_quote: WriteSignal<u8>,
 	index: ReadSignal<usize>,
 	set_index: WriteSignal<usize>,
@@ -14,7 +14,7 @@ pub fn set_event_listener(
 	animation_id: RwSignal<usize>,
 ) {
 	let handle = window_event_listener(leptos::ev::keydown, move |event| {
-		let Some(quote) = quote.get() else {
+		let Some(Ok(quote)) = quote.get() else {
 			leptos::logging::log!("no quote to type");
 			return;
 		};

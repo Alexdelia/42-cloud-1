@@ -1,7 +1,7 @@
 mod field;
 mod on_keydown;
 mod progress;
-// mod query_quote;
+mod query_quote;
 mod stats;
 mod wrong_key_animation;
 
@@ -15,21 +15,16 @@ type Animation = (char, usize);
 
 #[component]
 pub fn Typing() -> impl IntoView {
-	let (quote, set_quote) = signal(None);
 	let (new_quote_requested, trigger_new_quote) = signal(0u8);
 	let (index, set_index) = signal(0usize);
 	let (stats, set_stats) = signal(Stats::default());
 	let (animations, set_animations) = signal(Vec::<Animation>::new());
 	let animation_id = RwSignal::new(0usize);
 
-	set_quote.set(Some(Quote {
-        text: "If this is all it takes to tear us apart, then maybe we weren't all that close to begin with.".to_string().replace(" ", "_"),
-        character: "Yukino Yukinoshita".to_string(),
-        anime: Anime {
-            name: "Oregairu".to_string(),
-            alt_name: "My Teen Romantic Comedy SNAFU".to_string(),
-        },
-    }));
+	let quote = Resource::new(
+		move || new_quote_requested.get(),
+		|_| query_quote::query_quote(),
+	);
 
 	Effect::watch(
 		move || new_quote_requested.get(),
@@ -53,19 +48,27 @@ pub fn Typing() -> impl IntoView {
 
 	view! {
 		<div class="page_typing_container">
-			<Show
-				when=move || { !quote.get().is_none() }
-				fallback=|| view! { <p>"Finding a cool quote..."</p> }
-			>
-				<stats::Ongoing stats=stats />
+			<Transition fallback=move || {
+				view! { <p>"[Transition] Finding a cool quote..."</p> }
+			}>
+				<Show
+					when=move || {
+						quote.get().map(|q| q.is_ok()).unwrap_or(false)
+					}
+					fallback=|| {
+						view! { <p>"[Show] Finding a cool quote..."</p> }
+					}
+				>
+					<stats::Ongoing stats=stats />
 
-				<field::Field quote=quote index=index />
+					<field::Field quote=quote index=index />
 
-				<progress::Progress
-					value=index
-					max=quote.get().unwrap().text.len()
-				/>
-			</Show>
+					<progress::Progress
+						value=index
+						max=quote.get().unwrap().unwrap().text.len()
+					/>
+				</Show>
+			</Transition>
 		</div>
 
 		<wrong_key_animation::WrongKeyAnimations animations=animations />

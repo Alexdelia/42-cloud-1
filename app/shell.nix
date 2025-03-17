@@ -22,6 +22,9 @@
       rustfmt = {
         enable = true;
         stages = ["pre-commit"];
+        settings = {
+          manifest-path = "./app/Cargo.toml";
+        };
       };
 
       prettier = {
