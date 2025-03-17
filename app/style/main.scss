@@ -40,7 +40,7 @@ body {
 	justify-content: center;
 	align-items: center;
 
-	font-family: 'Sono', monospace;
+	font-family: "Sono", monospace;
 	font-size: 5rem;
 
 	.prev {
@@ -129,7 +129,7 @@ progress::-moz-progress-bar {
 
 	text-align: center;
 
-	font-family: 'Syne Mono', monospace;
+	font-family: "Syne Mono", monospace;
 	font-size: 7rem;
 	font-weight: bold;
 
@@ -179,12 +179,12 @@ progress::-moz-progress-bar {
 		.value {
 			margin-top: 0.5rem;
 
-			font-family: 'Courier Prime', monospace;
+			font-family: "Courier Prime", monospace;
 			font-size: 2rem;
 		}
 
 		.unit {
-			font-family: 'Sono', monospace;
+			font-family: "Sono", monospace;
 			font-size: 1.25rem;
 
 			color: hsl(0, 0%, 70%);
