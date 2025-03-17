@@ -6,10 +6,8 @@ use super::{Animation, Quote, Stats};
 pub fn set_event_listener(
 	quote: Resource<Result<Quote, ServerFnError>>,
 	trigger_new_quote: WriteSignal<u8>,
-	index: ReadSignal<usize>,
-	set_index: WriteSignal<usize>,
-	stats: ReadSignal<Stats>,
-	set_stats: WriteSignal<Stats>,
+	(index, set_index): (ReadSignal<usize>, WriteSignal<usize>),
+	(stats, set_stats): (ReadSignal<Stats>, WriteSignal<Stats>),
 	set_animations: WriteSignal<Vec<Animation>>,
 	animation_id: RwSignal<usize>,
 ) {

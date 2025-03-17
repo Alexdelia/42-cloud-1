@@ -35,10 +35,8 @@ pub fn Typing() -> impl IntoView {
 	on_keydown::set_event_listener(
 		quote,
 		trigger_new_quote,
-		index,
-		set_index,
-		stats,
-		set_stats,
+		(index, set_index),
+		(stats, set_stats),
 		set_animations,
 		animation_id,
 	);
