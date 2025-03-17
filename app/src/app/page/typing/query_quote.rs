@@ -5,9 +5,10 @@ use super::{Anime, Quote};
 
 const URL: &str = "https://animechan.io/api/v1/quotes/random";
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 struct QuoteResponse {
-	data: Quote,
+	data: Option<Quote>,
+	message: Option<String>,
 }
 
 #[server]
@@ -32,9 +33,17 @@ pub async fn query_quote() -> Result<Quote, ServerFnError> {
 	dbg!(&res);
 
 	let Ok(res) = res else {
-		leptos::logging::log!("error parsing quote:\n{res:#?}");
+		leptos::logging::log!("error parsing quote:\n{res:#?}",);
 		return default;
 	};
 
-	Ok(res.data)
+	let Some(quote) = res.data else {
+		leptos::logging::log!(
+			"error parsing inner quote: '{message}'\n{res:#?}",
+			message = res.clone().message.unwrap_or_else(|| "None".to_string()),
+		);
+		return default;
+	};
+
+	Ok(quote)
 }
