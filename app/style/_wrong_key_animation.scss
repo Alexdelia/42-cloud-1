@@ -1,0 +1,44 @@
+@use "var";
+
+.wrong_key_animation_container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+}
+
+.wrong_key_animation {
+	position: absolute;
+	top: 60vh;
+	left: calc(50vw - (7rem / 3));
+
+	text-align: center;
+
+	font-family: "Syne Mono", monospace;
+	font-size: 7rem;
+	font-weight: bold;
+
+	animation: grow-rotate-fall 1s ease-out forwards;
+}
+
+@keyframes grow-rotate-fall {
+	0% {
+		transform: scale(0.8) rotate(0deg);
+		color: hsl(0, 65%, 60%);
+		text-shadow: 0 0 0.5rem hsl(0, 65%, 60%);
+		opacity: 1;
+	}
+	10% {
+		transform: scale(1.25) rotate(0deg);
+		color: hsl(0, 65%, 50%);
+		text-shadow: 0 0 0.5rem hsl(0, 65%, 50%);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1) rotate(20deg) translateY(4rem) translateX(2rem);
+		color: hsl(0, 0, 0);
+		text-shadow: 0 0 0.5rem var.$background-color;
+		opacity: -0.5;
+	}
+}
