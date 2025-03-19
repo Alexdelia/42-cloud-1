@@ -41,7 +41,7 @@ impl Into<Quote> for QuoteResponse {
                 character: "Yukino Yukinoshita".to_string(),
                 anime: Anime {
                     name: "Oregairu".to_string(),
-                    alt_name: "My Teen Romantic Comedy SNAFU".to_string(),
+                    alt_name: Some("My Teen Romantic Comedy SNAFU".to_string()),
                 },
             };
 		};

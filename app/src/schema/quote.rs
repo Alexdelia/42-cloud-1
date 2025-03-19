@@ -12,5 +12,5 @@ pub struct Quote {
 pub struct Anime {
 	pub name: String,
 	#[serde(rename = "altName")]
-	pub alt_name: String,
+	pub alt_name: Option<String>,
 }
