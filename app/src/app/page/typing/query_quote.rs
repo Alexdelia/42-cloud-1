@@ -14,8 +14,22 @@ const URL: &str = "https://animechan.io/api/v1/quotes/random";
 #[cfg(feature = "ssr")]
 #[derive(Default, Deserialize, Debug, Clone)]
 struct QuoteResponse {
-	data: Option<Quote>,
+	data: Option<QuoteResponseData>,
 	message: Option<String>,
+}
+
+#[cfg(feature = "ssr")]
+#[derive(Deserialize, Debug, Clone)]
+struct QuoteResponseData {
+	content: String,
+	character: Character,
+	anime: Anime,
+}
+
+#[cfg(feature = "ssr")]
+#[derive(Deserialize, Debug, Clone)]
+struct Character {
+	name: String,
 }
 
 #[cfg(feature = "ssr")]
@@ -33,8 +47,9 @@ impl Into<Quote> for QuoteResponse {
 		};
 
 		Quote {
-			text: quote.text.replace(" ", "_"),
-			..quote
+			text: quote.content.replace(" ", "_"),
+			character: quote.character.name,
+			anime: quote.anime,
 		}
 	}
 }
@@ -49,7 +64,6 @@ pub async fn query_quote() -> Result<Quote, ServerFnError> {
 	};
 
 	let res = res.json::<QuoteResponse>().await;
-	dbg!(&res);
 
 	let Ok(res) = res else {
 		leptos::logging::log!("error parsing quote:\n{res:#?}",);

@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Default, Clone, Serialize, Deserialize, Debug)]
 pub struct Quote {
-	#[serde(rename = "content")]
 	pub text: String,
 
 	pub character: String,
