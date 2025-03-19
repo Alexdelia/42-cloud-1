@@ -36,8 +36,7 @@ pub fn App() -> impl IntoView {
 	view! {
 		<Stylesheet id="leptos" href="/pkg/cloud-1.css" />
 
-		// sets the document title
-		<Title text="Welcome to Leptos" />
+		<Title text="Tust" />
 
 		<Router>
 			<main>
