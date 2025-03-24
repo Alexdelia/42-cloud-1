@@ -53,6 +53,7 @@ in
     packages = with pkgs; [
       cargo-leptos
       dart-sass
+      binaryen
 
       leptosfmt
       nodePackages.prettier
@@ -73,6 +74,6 @@ in
         alias serve="cargo leptos serve"
         alias watch="cargo leptos watch"
 
-        alias fmt="leptosfmt ./src/**/*.rs && prettier --write ./style/**/*css --cache --log-level=warn"
+        alias fmt="leptosfmt ./src/**/*.rs && cargo fmt && prettier --write ./style/**/*css --cache --log-level=warn"
       '';
   }
