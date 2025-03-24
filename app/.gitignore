@@ -1,3 +1,6 @@
+# secrets
+.env
+
 # nix
 # build output
 result
@@ -20,3 +23,6 @@ Cargo.lock
 
 # scss
 .sass-cache/
+
+# postgres volumes
+db

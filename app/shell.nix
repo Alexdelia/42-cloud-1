@@ -65,6 +65,11 @@ in
       ''
         ${pre-commit-check.shellHook}
 
+        if [ ! -f .env ]; then
+        	cp .env.example .env
+        	printf "\n\n\t\033[1mplease look at the \033[35m.env\033[39m file\033[0m\n\n"
+        fi
+
         alias serve="cargo leptos serve"
         alias watch="cargo leptos watch"
 

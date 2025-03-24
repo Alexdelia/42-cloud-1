@@ -1,0 +1,40 @@
+# the use of ${VAR?"my error message"} defines a required variable
+# see https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/#interpolation-syntax
+
+services:
+  db:
+    # https://hub.docker.com/_/postgres
+    # specify the version so upgrades are not automatic
+    # using alpine for smaller image size (we don't need better tooling in the image)
+    image: postgres:17-alpine
+
+    container_name: ${PROJECT_NAME}-db
+
+    environment:
+      POSTGRES_USER: ${PROJECT_NAME?"PROJECT_NAME is required, please set it in your .env file"}
+      POSTGRES_PASSWORD: ${DB_PASSWORD?"DB_PASSWORD is required, please set it in your .env file"}
+      POSTGRES_DB: ${PROJECT_NAME}
+
+    volumes:
+      - db:/var/lib/postgresql/data
+
+    # act only as "type documentation", see https://docs.docker.com/reference/dockerfile/#expose
+    # it does not "publish" the port to the host
+    expose:
+      # default to 5432 if DB_PORT is not set
+      # see https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/#interpolation-syntax
+      - ${DB_PORT:-5432}
+
+    # https://github.com/peter-evans/docker-compose-healthcheck?tab=readme-ov-file#waiting-for-postgresql-to-be-healthy
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        # https://www.postgresql.org/docs/9.4/app-pg-isready.html
+        # it's using variables from inside the container
+        - "pg_isready --username $POSTGRES_USER --dbname $POSTGRES_DB"
+
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+    restart: unless-stopped
