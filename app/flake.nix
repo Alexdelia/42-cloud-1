@@ -1,6 +1,8 @@
 {
   description = "cloud-1 frontend flake";
 
+  # FIXME: use treefmt for formatting https://github.com/numtide/treefmt-nix
+  # TODO: look into https://github.com/srid/leptos-fullstack/tree/master
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -28,7 +30,7 @@
         };
       in {
         # build
-        # packages.default = pkgs.callPackage ./default.nix {inherit pkgs;};
+        packages.default = pkgs.callPackage ./default.nix {inherit pkgs;};
 
         # dev shell
         devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs inputs;};
