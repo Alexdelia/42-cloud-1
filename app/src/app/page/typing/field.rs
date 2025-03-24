@@ -16,7 +16,7 @@ pub fn Field(
 			.expect("Quote is error")
 			.text
 	};
-	let max = t().len();
+	let max = move || t().len();
 	let i = move || index.get();
 
 	view! {
@@ -31,12 +31,12 @@ pub fn Field(
 				}}
 			</span>
 			<span class="current">
-				{move || { t()[i()..(i() + 1).min(max)].to_string() }}
+				{move || { t()[i()..(i() + 1).min(max())].to_string() }}
 			</span>
 			<span class="next">
 				{move || {
 					t()[(i() + 1)
-							.min(max)..(i() + VISIBLE_CHAR_RADIUS).min(max)]
+							.min(max())..(i() + VISIBLE_CHAR_RADIUS).min(max())]
 						.to_string()
 				}}
 			</span>
