@@ -16,7 +16,7 @@ services:
       POSTGRES_DB: ${PROJECT_NAME}
 
     volumes:
-      - db:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
 
     # act only as "type documentation", see https://docs.docker.com/reference/dockerfile/#expose
     # it does not "publish" the port to the host
@@ -30,8 +30,7 @@ services:
       test:
         - "CMD-SHELL"
         # https://www.postgresql.org/docs/9.4/app-pg-isready.html
-        # it's using variables from inside the container
-        - "pg_isready --username $POSTGRES_USER --dbname $POSTGRES_DB"
+        - "pg_isready --username $PROJECT_NAME --dbname $PROJECT_NAME"
 
       interval: 30s
       timeout: 10s
