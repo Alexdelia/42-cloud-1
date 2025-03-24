@@ -3,6 +3,7 @@
 
   # FIXME: use treefmt for formatting https://github.com/numtide/treefmt-nix
   # TODO: look into https://github.com/srid/leptos-fullstack/tree/master
+  # TODO: look into jenkins
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
