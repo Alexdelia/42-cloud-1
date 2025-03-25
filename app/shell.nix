@@ -34,6 +34,7 @@
       prettier = {
         enable = true;
         stages = ["pre-commit"];
+        files = "\\.s?css$";
       };
     };
   };
