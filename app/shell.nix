@@ -44,10 +44,7 @@ in
       [
         openssl
         pkg-config
-        (rust-bin.stable.latest.default.override {
-          # extensions = ["rust-src"];
-          targets = ["wasm32-unknown-unknown"];
-        })
+        (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
       ]
       ++ pre-commit-check.buildInputs;
 

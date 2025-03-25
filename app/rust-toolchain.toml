@@ -2,7 +2,7 @@
 channel = "stable"
 components = [
 	"rustc",
-	"ruststd",
+	"rust-std",
 	"rust-src",
 	"rust-analyzer",
 	"cargo",
