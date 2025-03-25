@@ -7,9 +7,16 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     rust-overlay.url = "github:oxalica/rust-overlay";
 
-    flake-utils.url = "github:numtide/flake-utils";
+    crane = {
+      url = "github:ipetkov/crane";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # treefmt-nix.url = "github:numtide/treefmt-nix";
 
     pre-commit-hooks = {
       url = "github:cachix/git-hooks.nix";
@@ -31,7 +38,7 @@
         };
       in {
         # build
-        packages.default = pkgs.callPackage ./default.nix {inherit pkgs;};
+        packages.default = pkgs.callPackage ./default.nix {inherit pkgs inputs;};
 
         # dev shell
         devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs inputs;};

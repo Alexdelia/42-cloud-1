@@ -1,0 +1,3 @@
+- use treefmt for formatting https://github.com/numtide/treefmt-nix
+- look into https://github.com/srid/leptos-fullstack/tree/master
+- look into jenkins
