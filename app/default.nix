@@ -2,8 +2,11 @@
   pkgs,
   inputs,
 }: let
-  lib = pkgs.lib;
-  craneLib = inputs.crane.mkLib pkgs;
+  inherit (pkgs) lib;
+
+  rustToolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
+
+  craneLib = (inputs.crane.mkLib pkgs).overrideToolchain rustToolchain;
 
   src = lib.fileset.toSource {
     root = ./.;
