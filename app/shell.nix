@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  base,
 }: let
   pre-commit-check = inputs.pre-commit-hooks.lib.${pkgs.system}.run {
     src = ./.;
@@ -40,22 +41,17 @@
   };
 in
   pkgs.mkShell {
-    buildInputs = with pkgs;
-      [
-        openssl
-        pkg-config
-        (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
-      ]
+    buildInputs =
+      base.common.nativeBuildInputs
       ++ pre-commit-check.buildInputs;
 
     packages = with pkgs; [
-      cargo-leptos
-      dart-sass
-      binaryen
-
       leptosfmt
       nodePackages.prettier
     ];
+
+    # for rust-analyzer 'hover' tooltips to work.
+    RUST_SRC_PATH = "${base.rustToolchain}/lib/rustlib/src/rust/library";
 
     shellHook =
       /*

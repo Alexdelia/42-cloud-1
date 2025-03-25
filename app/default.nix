@@ -1,26 +1,34 @@
 {
   pkgs,
-  inputs,
-}: let
-  inherit (pkgs) lib;
+  base,
+}:
+base.craneLib.buildPackage {
+  inherit (base.common) src pname version;
+  inherit (base) cargoArtifacts;
 
-  rustToolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
+  buildPhaseCargoCommand = ''
+    cargoBuildLog=$(mktemp cargoBuildLogXXXX.json)
+    cargo leptos build --release -vvv
+  '';
+  cargoTestCommand = "cargo leptos test --release -vvv #";
 
-  craneLib = (inputs.crane.mkLib pkgs).overrideToolchain rustToolchain;
+  nativeBuildInputs = with pkgs;
+    [
+      makeWrapper
+    ]
+    ++ base.common.nativeBuildInputs;
 
-  src = lib.fileset.toSource {
-    root = ./.;
-    fileset = lib.fileset.unions [
-      (craneLib.fileset.commonCargoSources ./.)
-      (
-        lib.fileset.fileFilter
-        (file: lib.any file.hasExt ["html" "scss"])
-        ./.
-      )
-      (lib.fileset.maybeMissing ./public)
-    ];
-  };
-in
-  craneLib.buildPackage {
-    inherit src;
-  }
+  installPhaseCommand =
+    /*
+    bash
+    */
+    ''
+      mkdir -p $out/bin
+
+      cp target/release/${base.common.pname} $out/bin/
+      cp -r target/site $out/bin/
+
+      wrapProgram $out/bin/${base.common.pname} \
+      	--set LEPTOS_SITE_ROOT $out/bin/site
+    '';
+}
