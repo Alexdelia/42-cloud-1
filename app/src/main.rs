@@ -1,38 +1,113 @@
-#[cfg(feature = "ssr")]
+cfg_if::cfg_if! {
+if #[cfg(feature = "ssr")] {
+
+#[macro_use]
+extern crate dotenv_codegen;
+
+use axum::{
+	body::Body as AxumBody,
+	extract::{FromRef, Path, RawQuery, State},
+	http::{header::HeaderMap, Request},
+	response::{IntoResponse, Response},
+	routing::get,
+	Router,
+};
+use cloud_1::app::*;
+use leptos::prelude::*;
+use leptos_axum::handle_server_fns_with_context;
+use leptos::logging::log;
+
+#[derive(FromRef, Clone)]
+pub struct AppState {
+	pub leptos_options: LeptosOptions,
+	pub pool: sqlx::postgres::PgPool,
+	pub client: reqwest::Client,
+}
+
+impl AppState {
+	pub async fn new() -> Self {
+		let pool = sqlx::postgres::PgPoolOptions::new()
+			.max_connections(8)
+			.connect(const_format::formatcp!(
+				"postgres://{username}:{password}@localhost:{port}/{dbname}",
+				username = dotenv!("PROJECT_NAME"),
+				password = dotenv!("DB_PASSWORD"),
+				port = dotenv!("DB_PORT"),
+				dbname = dotenv!("PROJECT_NAME"),
+			))
+			.await
+			.expect("failed to connect to postgres and create pool");
+
+		Self {
+			leptos_options: get_configuration(None).unwrap().leptos_options,
+			pool,
+			client: reqwest::Client::new(),
+		}
+	}
+}
+
+async fn server_fn_handler(
+	State(state): State<AppState>,
+	path: Path<String>,
+	headers: HeaderMap,
+	raw_query: RawQuery,
+	request: Request<AxumBody>,
+) -> impl IntoResponse {
+	log!("{:?}", path);
+
+	handle_server_fns_with_context(
+		path,
+		headers,
+		raw_query,
+		move |cx| {
+			provide_context(cx, state.pool.clone());
+		},
+		request,
+	)
+	.await
+}
+
+async fn leptos_routes_handler(State(state): State<AppState>, req: Request<AxumBody>) -> Response {
+	let handler = leptos_axum::render_app_to_stream_with_context(
+		state.leptos_options.clone(),
+		move |cx| {
+			provide_context(cx, state.pool.clone());
+		},
+		|cx| view! { cx, <App/> },
+	);
+	handler(req).await.into_response()
+}
+
 #[tokio::main]
 async fn main() {
-	use axum::Router;
-	use cloud_1::app::*;
-	use leptos::logging::log;
-	use leptos::prelude::*;
-	use leptos_axum::{LeptosRoutes, generate_route_list};
+	use leptos_axum::LeptosRoutes;
 
-	let conf = get_configuration(None).unwrap();
-	let addr = conf.leptos_options.site_addr;
-	let leptos_options = conf.leptos_options;
-	// Generate the list of routes in your Leptos App
-	let routes = generate_route_list(App);
+	let state = AppState::new().await;
+
+	let routes = leptos_axum::generate_route_list(App);
 
 	let app = Router::new()
-		.leptos_routes(&leptos_options, routes, {
-			let leptos_options = leptos_options.clone();
-			move || shell(leptos_options.clone())
-		})
+		.route(
+			"/api/*fn_name",
+			get(server_fn_handler).post(server_fn_handler),
+		)
+		.leptos_routes_with_handler(routes, get(leptos_routes_handler))
 		.fallback(leptos_axum::file_and_error_handler(shell))
-		.with_state(leptos_options);
+		.with_state(state);
 
-	// run our app with hyper
-	// `axum::Server` is a re-export of `hyper::Server`
-	log!("listening on http://{}", &addr);
+	let addr = &state.leptos_options.site_addr;
 	let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+	log!("🟢 http://{}", &addr);
 	axum::serve(listener, app.into_make_service())
 		.await
 		.unwrap();
 }
 
-#[cfg(not(feature = "ssr"))]
+} else {
 pub fn main() {
 	// no client-side main function
 	// unless we want this to work with e.g., Trunk for pure client-side testing
 	// see lib.rs for hydration function instead
+}
+}
 }
