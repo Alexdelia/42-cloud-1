@@ -6,8 +6,8 @@ extern crate dotenv_codegen;
 
 use axum::{
 	body::Body as AxumBody,
-	extract::{FromRef, Path, RawQuery, State},
-	http::{header::HeaderMap, Request},
+	extract::{FromRef, Path, State},
+	http::Request,
 	response::{IntoResponse, Response},
 	routing::get,
 	Router,
@@ -49,31 +49,28 @@ impl AppState {
 async fn server_fn_handler(
 	State(state): State<AppState>,
 	path: Path<String>,
-	headers: HeaderMap,
-	raw_query: RawQuery,
 	request: Request<AxumBody>,
 ) -> impl IntoResponse {
 	log!("{:?}", path);
 
 	handle_server_fns_with_context(
-		path,
-		headers,
-		raw_query,
-		move |cx| {
-			provide_context(cx, state.pool.clone());
+		move || {
+			provide_context(state.pool.clone());
 		},
 		request,
 	)
 	.await
 }
 
-async fn leptos_routes_handler(State(state): State<AppState>, req: Request<AxumBody>) -> Response {
+async fn leptos_routes_handler(
+	State(state): State<AppState>,
+	req: Request<AxumBody>,
+) -> Response {
 	let handler = leptos_axum::render_app_to_stream_with_context(
-		state.leptos_options.clone(),
-		move |cx| {
-			provide_context(cx, state.pool.clone());
+		move || {
+			provide_context(state.pool.clone());
 		},
-		|cx| view! { cx, <App/> },
+		move || shell(state.leptos_options.clone())
 	);
 	handler(req).await.into_response()
 }
@@ -84,6 +81,7 @@ async fn main() {
 
 	let state = AppState::new().await;
 
+	let addr = state.leptos_options.site_addr;
 	let routes = leptos_axum::generate_route_list(App);
 
 	let app = Router::new()
@@ -92,10 +90,9 @@ async fn main() {
 			get(server_fn_handler).post(server_fn_handler),
 		)
 		.leptos_routes_with_handler(routes, get(leptos_routes_handler))
-		.fallback(leptos_axum::file_and_error_handler(shell))
+		.fallback(leptos_axum::file_and_error_handler::<AppState, _>(shell))
 		.with_state(state);
 
-	let addr = &state.leptos_options.site_addr;
 	let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
 	log!("🟢 http://{}", &addr);
 	axum::serve(listener, app.into_make_service())

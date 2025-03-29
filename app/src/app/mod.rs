@@ -1,7 +1,7 @@
 mod page;
 
 use leptos::prelude::*;
-use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
+use leptos_meta::{MetaTags, Stylesheet, Title};
 use leptos_router::{
 	StaticSegment,
 	components::{Route, Router, Routes},
@@ -31,7 +31,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
 #[component]
 pub fn App() -> impl IntoView {
 	// Provides context that manages stylesheets, titles, meta tags, etc.
-	provide_meta_context();
+	leptos_meta::provide_meta_context();
 
 	view! {
 		<Stylesheet id="leptos" href="/pkg/cloud-1.css" />

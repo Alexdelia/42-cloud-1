@@ -1,5 +1,2 @@
-[rust-analyzer]
-cargo.features = ["all"]
-
 [rustfmt]
 overrideCommand = ["leptosfmt", "--stdin", "--rustfmt"]
