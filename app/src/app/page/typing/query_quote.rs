@@ -33,9 +33,9 @@ struct Character {
 }
 
 #[cfg(feature = "ssr")]
-impl Into<Quote> for QuoteResponse {
-	fn into(self) -> Quote {
-		let Some(quote) = self.data else {
+impl From<QuoteResponse> for Quote {
+	fn from(val: QuoteResponse) -> Self {
+		let Some(quote) = val.data else {
 			return Quote {
                 text: "If this is all it takes to tear us apart, then maybe we weren't all that close to begin with.".to_string().replace(" ", "_"),
                 character: "Yukino Yukinoshita".to_string(),
