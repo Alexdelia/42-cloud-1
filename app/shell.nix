@@ -16,17 +16,6 @@
         stages = ["pre-commit"];
       };
 
-      /*
-      clippy = {
-        enable = false;
-        stages = ["pre-push"];
-        settings = {
-          extraArgs = "--manifest-path=./app/Cargo.toml";
-          # allFeatures = true;
-        };
-      };
-      */
-
       nix-check = {
         enable = true;
 
