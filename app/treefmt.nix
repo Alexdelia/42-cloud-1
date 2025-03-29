@@ -6,6 +6,7 @@ _: {
       enable = true;
       edition = "2024";
     };
+    leptosfmt.enable = true;
 
     alejandra.enable = true;
     deadnix.enable = true;
@@ -18,4 +19,18 @@ _: {
       };
     };
   };
+
+  settings.global.excludes = [
+    ".gitingore"
+
+    "*.lock"
+
+    ".env*"
+
+    "*.png"
+    "*.ico"
+
+    "*.toml"
+    "Dockerfile"
+  ];
 }

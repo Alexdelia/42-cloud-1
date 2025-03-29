@@ -63,6 +63,8 @@
               openssl
               pkg-config
 
+              rustToolchain
+
               cargo-leptos
               dart-sass
               binaryen # provides wasm-opt
