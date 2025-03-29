@@ -56,11 +56,6 @@ in
       base.common.nativeBuildInputs
       ++ pre-commit-check.buildInputs;
 
-    packages = with pkgs; [
-      leptosfmt
-      nodePackages.prettier
-    ];
-
     # for rust-analyzer 'hover' tooltips to work.
     RUST_SRC_PATH = "${base.rustToolchain}/lib/rustlib/src/rust/library";
 
@@ -79,6 +74,6 @@ in
         alias serve="cargo leptos serve"
         alias watch="cargo leptos watch"
 
-        alias fmt="leptosfmt ./src/**/*.rs && cargo fmt && prettier --write ./style/**/*css --cache --log-level=warn"
+        alias fmt="nix fmt"
       '';
   }
