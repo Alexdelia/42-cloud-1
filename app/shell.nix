@@ -17,7 +17,7 @@
       };
 
       nix-check = {
-        enable = true;
+        enable = false; # is using .env which is not in the repo
 
         name = "nix flake check";
         entry = "bash -c 'cd ./app && nix flake check \"$@\"'";
