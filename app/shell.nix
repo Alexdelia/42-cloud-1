@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  base,
 }: let
   pre-commit-check = inputs.pre-commit-hooks.lib.${pkgs.system}.run {
     src = ./.;
@@ -15,6 +16,7 @@
         stages = ["pre-commit"];
       };
 
+      /*
       clippy = {
         enable = false;
         stages = ["pre-push"];
@@ -23,41 +25,44 @@
           # allFeatures = true;
         };
       };
-      rustfmt = {
+      */
+
+      nix-check = {
         enable = true;
-        stages = ["pre-commit"];
-        settings = {
-          manifest-path = "./app/Cargo.toml";
-        };
+
+        name = "nix flake check";
+        entry = "bash -c 'cd ./app && nix flake check \"$@\"'";
+
+        pass_filenames = false;
+        always_run = true;
+        stages = ["pre-push"];
       };
 
-      prettier = {
+      nix-fmt = {
         enable = true;
+
+        name = "nix fmt";
+        entry = "bash -c 'cd ./app && nix fmt \"$@\"'";
+
+        pass_filenames = false;
+        always_run = true;
         stages = ["pre-commit"];
       };
     };
   };
 in
   pkgs.mkShell {
-    buildInputs = with pkgs;
-      [
-        openssl
-        pkg-config
-        (rust-bin.stable.latest.default.override {
-          # extensions = ["rust-src"];
-          targets = ["wasm32-unknown-unknown"];
-        })
-      ]
+    buildInputs =
+      base.common.nativeBuildInputs
       ++ pre-commit-check.buildInputs;
 
     packages = with pkgs; [
-      cargo-leptos
-      dart-sass
-      binaryen
-
       leptosfmt
       nodePackages.prettier
     ];
+
+    # for rust-analyzer 'hover' tooltips to work.
+    RUST_SRC_PATH = "${base.rustToolchain}/lib/rustlib/src/rust/library";
 
     shellHook =
       /*

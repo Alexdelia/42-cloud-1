@@ -1,19 +1,34 @@
-{pkgs ? import <nixpkgs> {}}:
-pkgs.rustPlatform.buildRustPackage {
-  pname = "cloud-1";
-  version = "0.3.0";
+{
+  pkgs,
+  base,
+}:
+base.craneLib.buildPackage {
+  inherit (base.common) src pname version;
+  inherit (base) cargoArtifacts;
 
-  src = pkgs.lib.cleanSource ./.;
-
-  cargoSha256 = pkgs.lib.fakeSha256;
-  cargoLock = {
-    lockFile = ./Cargo.lock;
-
-    outputHashes = {
-    };
-  };
-
-  postInstall = ''
-    ls -lahR $out | tee $out/ls.txt
+  buildPhaseCargoCommand = ''
+    cargoBuildLog=$(mktemp cargoBuildLogXXXX.json)
+    cargo leptos build --release -vvv
   '';
+  cargoTestCommand = "cargo leptos test --release -vvv #";
+
+  nativeBuildInputs = with pkgs;
+    [
+      makeWrapper
+    ]
+    ++ base.common.nativeBuildInputs;
+
+  installPhaseCommand =
+    /*
+    bash
+    */
+    ''
+      mkdir -p $out/bin
+
+      cp target/release/${base.common.pname} $out/bin/
+      cp -r target/site $out/bin/
+
+      wrapProgram $out/bin/${base.common.pname} \
+      	--set LEPTOS_SITE_ROOT $out/bin/site
+    '';
 }

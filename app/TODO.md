@@ -1,0 +1,1 @@
+- use treefmt for formatting https://github.com/numtide/treefmt-nix
