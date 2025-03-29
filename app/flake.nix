@@ -44,7 +44,7 @@
 
           common = {
             pname = cargoToml.package.name;
-            version = cargoToml.package.version;
+            inherit (cargoToml.package) version;
 
             src = lib.fileset.toSource {
               root = ./.;

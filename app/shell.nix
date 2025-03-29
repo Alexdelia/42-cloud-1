@@ -16,6 +16,7 @@
         stages = ["pre-commit"];
       };
 
+      /*
       clippy = {
         enable = false;
         stages = ["pre-push"];
@@ -24,18 +25,28 @@
           # allFeatures = true;
         };
       };
-      rustfmt = {
+      */
+
+      nix-check = {
         enable = true;
-        stages = ["pre-commit"];
-        settings = {
-          manifest-path = "./app/Cargo.toml";
-        };
+
+        name = "nix flake check";
+        entry = "bash -c 'cd ./app && nix flake check \"$@\"'";
+
+        pass_filenames = false;
+        always_run = true;
+        stages = ["pre-push"];
       };
 
-      prettier = {
+      nix-fmt = {
         enable = true;
+
+        name = "nix fmt";
+        entry = "bash -c 'cd ./app && nix fmt \"$@\"'";
+
+        pass_filenames = false;
+        always_run = true;
         stages = ["pre-commit"];
-        files = "\\.s?css$";
       };
     };
   };
