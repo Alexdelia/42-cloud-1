@@ -1,12 +1,13 @@
 mod computed;
-// #[cfg(feature = "ssr")]
-// mod query;
+#[cfg(feature = "ssr")]
+mod query;
 
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 #[cfg(feature = "ssr")]
 use sqlx::prelude::FromRow;
 
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 #[cfg_attr(feature = "ssr", derive(FromRow))]
 pub struct Stats {
 	pub start_time: DateTime<Utc>,

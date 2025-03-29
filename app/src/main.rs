@@ -21,7 +21,7 @@ use leptos::logging::log;
 pub struct AppState {
 	pub leptos_options: LeptosOptions,
 	pub pool: sqlx::postgres::PgPool,
-	pub client: reqwest::Client,
+	// pub client: reqwest::Client,
 }
 
 impl AppState {
@@ -41,7 +41,7 @@ impl AppState {
 		Self {
 			leptos_options: get_configuration(None).unwrap().leptos_options,
 			pool,
-			client: reqwest::Client::new(),
+			// client: reqwest::Client::new(),
 		}
 	}
 }
