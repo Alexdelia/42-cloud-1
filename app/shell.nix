@@ -45,7 +45,6 @@
         entry = "bash -c 'cd ./app && nix fmt \"$@\"'";
 
         pass_filenames = false;
-        always_run = true;
         stages = ["pre-commit"];
       };
     };
