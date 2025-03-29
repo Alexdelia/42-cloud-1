@@ -11,12 +11,9 @@
 
     rust-overlay.url = "github:oxalica/rust-overlay";
 
-    crane = {
-      url = "github:ipetkov/crane";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    crane.url = "github:ipetkov/crane";
 
-    # treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
 
     pre-commit-hooks = {
       url = "github:cachix/git-hooks.nix";
@@ -25,6 +22,7 @@
   };
 
   outputs = {
+    self,
     nixpkgs,
     rust-overlay,
     flake-utils,
@@ -73,19 +71,28 @@
 
           cargoArtifacts = craneLib.buildDepsOnly common;
         };
+
+        treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
       in {
         # nix build
         packages.default = pkgs.callPackage ./default.nix {inherit pkgs base;};
 
         # nix flake check
-        check = base.craneLib.cargoClippy (base.common
-          // {
-            inherit (base) cargoArtifacts;
-            cargoClippyExtraArgs = "--all-targets --all-features -- --deny warnings";
-          });
+        checks = {
+          cargo-clippy = base.craneLib.cargoClippy (base.common
+            // {
+              inherit (base) cargoArtifacts;
+              cargoClippyExtraArgs = "--all-targets --all-features -- --deny warnings";
+            });
+
+          formatting = treefmtEval.config.build.check self;
+        };
 
         # nix develop
         devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs inputs base;};
+
+        # nix fmt
+        formatter = treefmtEval.config.build.wrapper;
       }
     );
 }
