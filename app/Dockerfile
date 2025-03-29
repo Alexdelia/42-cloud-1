@@ -5,16 +5,11 @@ FROM nixos/nix:latest AS builder
 RUN mkdir -p /build
 WORKDIR /build
 
-COPY \
-	./*.nix \
-	./flake.lock \
-	./Cargo.toml \
-	./Cargo.lock \
-	./rust-toolchain.toml \
-	./src/**/*.rs \
-	./style/**/*css \
-	./public/ \
-	.
+COPY . .
 
 # build the project
-RUN nix build
+RUN nix \
+	--experimental-features 'nix-command flakes' \
+	build
+
+# TODO: stage 2 of multi-stage build

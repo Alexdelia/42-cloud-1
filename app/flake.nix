@@ -56,6 +56,7 @@
                   ./.
                 )
                 (lib.fileset.maybeMissing ./public)
+                (lib.fileset.maybeMissing ./.env)
               ];
             };
 
