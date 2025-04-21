@@ -42,7 +42,7 @@ pub async fn list(user_uuid: Uuid) -> Result<Vec<Stats>, ServerFnError> {
 
 	let stats = sqlx::query_as!(
 		StatsRow,
-		"SELECT * FROM stats WHERE user_uuid = $1",
+		"SELECT * FROM stats WHERE user_uuid = $1 ORDER BY created_at DESC",
 		user_uuid
 	)
 	.fetch_all(&pool)
