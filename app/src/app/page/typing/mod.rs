@@ -1,5 +1,6 @@
 mod field;
 mod on_keydown;
+mod origin;
 mod progress;
 mod query_quote;
 mod stats;
@@ -89,6 +90,8 @@ pub fn Typing() -> impl IntoView {
 						value=index
 						max=quote.get().unwrap().unwrap().text.len()
 					/>
+
+					<origin::Origin quote=quote />
 				</Show>
 			</Transition>
 		</div>

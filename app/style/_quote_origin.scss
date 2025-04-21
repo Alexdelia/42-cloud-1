@@ -1,0 +1,21 @@
+.quote_origin {
+	position: absolute;
+
+	width: 80vw;
+
+	left: 10vh;
+	bottom: calc(10vh - 1rem);
+
+	font-family: "Sono", monospace;
+	font-size: 2rem;
+
+	color: hsl(0, 0%, 70%);
+
+	.dash {
+		font-weight: bold;
+
+		opacity: 0.5;
+
+		margin-right: 0.5rem;
+	}
+}
