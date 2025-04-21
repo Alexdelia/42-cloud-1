@@ -1,7 +1,6 @@
+use super::{Animation, Quote, Stats};
 use chrono::Utc;
 use leptos::prelude::*;
-
-use super::{Animation, Quote, Stats};
 
 pub fn set_event_listener(
 	quote: Resource<Result<Quote, ServerFnError>>,

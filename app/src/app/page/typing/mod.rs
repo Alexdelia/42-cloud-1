@@ -12,6 +12,11 @@ type Animation = (char, usize);
 
 #[component]
 pub fn Typing() -> impl IntoView {
+	let store_result = Action::new(|(user_uuid, stats): &(uuid::Uuid, Stats)| {
+		let user_uuid = user_uuid.clone();
+		let stats = stats.clone();
+		async move { crate::schema::stats::query::store(user_uuid, stats).await }
+	});
 	let (new_quote_requested, trigger_new_quote) = signal(0u8);
 	let (index, set_index) = signal(0usize);
 	let (stats, set_stats) = signal(Stats::default());
@@ -26,6 +31,9 @@ pub fn Typing() -> impl IntoView {
 	Effect::watch(
 		move || new_quote_requested.get(),
 		move |_, _, _| {
+			if index.get() > 0 {
+				store_result.dispatch((uuid::Uuid::new_v4(), stats.get()));
+			}
 			set_index.set(0);
 			set_stats.update(|stats| *stats = Stats::default());
 		},

@@ -1,6 +1,5 @@
 mod computed;
-#[cfg(feature = "ssr")]
-mod query;
+pub mod query;
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};

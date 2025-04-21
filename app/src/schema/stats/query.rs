@@ -2,8 +2,10 @@ use super::Stats;
 use chrono::{DateTime, Utc};
 use leptos::prelude::*;
 use serde::{Deserialize, Serialize};
-use sqlx::prelude::FromRow;
 use uuid::Uuid;
+
+#[cfg(feature = "ssr")]
+use sqlx::prelude::FromRow;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 #[cfg_attr(feature = "ssr", derive(FromRow))]
