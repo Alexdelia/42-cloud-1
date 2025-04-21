@@ -40,8 +40,7 @@ pub fn App() -> impl IntoView {
 
 		<Router>
 			<main>
-				// TODO: add a nice 404 page
-				<Routes fallback=|| "Page not found.".into_view()>
+				<Routes fallback=page::NotFound>
 					<Route path=StaticSegment("") view=page::Typing />
 				</Routes>
 			</main>

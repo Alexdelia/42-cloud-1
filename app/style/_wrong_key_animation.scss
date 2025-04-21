@@ -37,7 +37,7 @@
 	}
 	100% {
 		transform: scale(1) rotate(20deg) translateY(4rem) translateX(2rem);
-		color: hsl(0, 0, 0);
+		color: hsl(0, 0%, 0%);
 		text-shadow: 0 0 0.5rem var.$background-color;
 		opacity: -0.5;
 	}

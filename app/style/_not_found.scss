@@ -1,0 +1,32 @@
+@use "var";
+
+.not_found {
+	height: 100vh;
+
+	margin: 0;
+	padding: 0;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-color: var.$background-color;
+	background-image: url("/404.gif");
+	background-size: cover;
+
+	font-family: "Sono", monospace;
+	font-size: 10rem;
+
+	color: rgba(255, 255, 255, 0.5);
+
+	.overlay {
+		width: 100vw;
+		height: 100vh;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		background-color: rgba(0, 0, 0, 0.33);
+	}
+}
