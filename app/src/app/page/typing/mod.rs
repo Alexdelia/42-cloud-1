@@ -12,46 +12,56 @@ use leptos_use::storage::use_local_storage;
 
 type Animation = (char, usize);
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum State {
+	Typing,
+	Completed,
+	Reset,
+}
+
 #[component]
 pub fn Typing() -> impl IntoView {
 	let (user_uuid, set_user_uuid, _) =
 		use_local_storage::<Option<uuid::Uuid>, OptionCodec<FromToStringCodec>>("user-uuid");
 	let store_result = Action::new(|(user_uuid, stats): &(uuid::Uuid, Stats)| {
-		let user_uuid = user_uuid.clone();
-		let stats = stats.clone();
+		let (user_uuid, stats) = (*user_uuid, stats.clone());
 		async move { crate::schema::stats::query::store(user_uuid, stats).await }
 	});
-	let (new_quote_requested, trigger_new_quote) = signal(0u8);
+	let (state, set_state) = signal(State::Typing);
 	let (index, set_index) = signal(0usize);
 	let (stats, set_stats) = signal(Stats::default());
 	let (animations, set_animations) = signal(Vec::<Animation>::new());
 	let animation_id = RwSignal::new(0usize);
 
-	let quote = Resource::new(
-		move || new_quote_requested.get(),
-		|_| query_quote::query_quote(),
-	);
+	let quote = Resource::new(|| {}, |_| query_quote::query_quote());
 
 	Effect::watch(
-		move || new_quote_requested.get(),
-		move |_, _, _| {
-			if index.get() > 0 {
-				let user = user_uuid.get().unwrap_or_else(|| {
-					let user = uuid::Uuid::new_v4();
-					set_user_uuid.set(Some(user));
-					user
-				});
-				store_result.dispatch((user, stats.get()));
-			}
-			set_index.set(0);
-			set_stats.update(|stats| *stats = Stats::default());
+		move || state.get(),
+		move |state, _, _| {
+			dbg!(state);
+			match state {
+				State::Typing => {}
+				State::Completed => {
+					let user = user_uuid.get().unwrap_or_else(|| {
+						let user = uuid::Uuid::new_v4();
+						set_user_uuid.set(Some(user));
+						user
+					});
+					store_result.dispatch((user, stats.get()));
+				}
+				State::Reset => {
+					set_index.set(0);
+					set_stats.update(|stats| *stats = Stats::default());
+					set_state.set(State::Typing);
+				}
+			};
 		},
 		true,
 	);
 
 	on_keydown::set_event_listener(
 		quote,
-		trigger_new_quote,
+		(state, set_state),
 		(index, set_index),
 		(stats, set_stats),
 		set_animations,

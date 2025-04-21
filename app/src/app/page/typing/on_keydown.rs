@@ -1,10 +1,10 @@
-use super::{Animation, Quote, Stats};
+use super::{Animation, Quote, State, Stats};
 use chrono::Utc;
 use leptos::prelude::*;
 
 pub fn set_event_listener(
 	quote: Resource<Result<Quote, ServerFnError>>,
-	trigger_new_quote: WriteSignal<u8>,
+	(state, set_state): (ReadSignal<State>, WriteSignal<State>),
 	(index, set_index): (ReadSignal<usize>, WriteSignal<usize>),
 	(stats, set_stats): (ReadSignal<Stats>, WriteSignal<Stats>),
 	set_animations: WriteSignal<Vec<Animation>>,
@@ -18,12 +18,16 @@ pub fn set_event_listener(
 		let text = quote.text;
 		let index = index.get();
 
-		let over = text.len() <= index;
+		if state.get() == State::Typing && text.len() <= index {
+			set_state.set(State::Completed);
+			return;
+		}
+		let over = state.get() == State::Completed;
 
 		let key = event.key();
 		if key.len() != 1 {
 			if (over && key == "Enter") || key == "Escape" {
-				trigger_new_quote.update(|n| *n = (*n + 1) % u8::MAX);
+				set_state.set(State::Reset);
 			}
 			return;
 		}
