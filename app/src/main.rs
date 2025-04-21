@@ -81,6 +81,11 @@ async fn main() {
 
 	let state = AppState::new().await;
 
+	sqlx::migrate!()
+		.run(&state.pool)
+		.await
+		.expect("failed to run migrations");
+
 	let addr = state.leptos_options.site_addr;
 	let routes = leptos_axum::generate_route_list(App);
 

@@ -8,6 +8,12 @@ _: {
     };
     leptosfmt.enable = true;
 
+    sqlfluff = {
+      enable = true;
+      dialect = "postgres";
+    };
+    sqlfluff-lint.enable = true; # inherit dialect from sqlfluff
+
     alejandra.enable = true;
     deadnix.enable = true;
     statix.enable = true;
@@ -22,6 +28,7 @@ _: {
 
   settings.global.excludes = [
     ".gitingore"
+    ".dockerignore"
 
     "*.lock"
 

@@ -42,7 +42,8 @@ in
   pkgs.mkShell {
     buildInputs =
       base.common.nativeBuildInputs
-      ++ pre-commit-check.buildInputs;
+      ++ pre-commit-check.buildInputs
+      ++ (with pkgs; [sqlx-cli]);
 
     # for rust-analyzer 'hover' tooltips to work.
     RUST_SRC_PATH = "${base.rustToolchain}/lib/rustlib/src/rust/library";
@@ -56,7 +57,10 @@ in
 
         if [ ! -f .env ]; then
         	cp .env.example .env
-        	printf "\n\n\t\033[1mplease look at the \033[35m.env\033[39m file\033[0m\n\n"
+        	printf "\n\n\t\033[1mplease look at the \033[35m.env\033[39m file and \033[32medit\033[39m as needed\033[0m\n"
+        	printf "\t\033[1myou can then run \033[32msource .env\033[0m\n\n"
+        else
+        	source .env
         fi
 
         alias serve="cargo leptos serve"
