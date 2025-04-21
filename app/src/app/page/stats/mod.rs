@@ -1,4 +1,6 @@
-use crate::schema::stats::Stats;
+mod list;
+
+use crate::{app::page, schema::stats::Stats};
 use leptos::prelude::*;
 use leptos_router::hooks::use_params;
 use leptos_router::params::Params;
@@ -18,12 +20,11 @@ pub fn Stats() -> impl IntoView {
 			.as_ref()
 			.ok()
 			.and_then(|params| params.user_uuid)
-			.unwrap_or_default()
 	};
 
 	let stats_list = Resource::new(
-		|| {},
-		move |_| crate::schema::stats::query::list(user_uuid()),
+		move || user_uuid(),
+		move |user_uuid| crate::schema::stats::query::list(user_uuid.unwrap_or_default()),
 	);
 
 	view! {
@@ -33,14 +34,13 @@ pub fn Stats() -> impl IntoView {
 			}>
 				<Show
 					when=move || {
-						stats_list.get().map(|s| s.is_ok()).unwrap_or(false)
+						user_uuid().is_some()
+							&& stats_list.get().map(|s| s.is_ok()).unwrap_or(false)
 					}
-					fallback=|| {
-						view! { <p>"[Show] getting stats..."</p> }
-					}
+					fallback=page::NotFound
 				>
-					<div>{user_uuid().to_string()}</div>
-					<pre>{stats_list.get().unwrap().unwrap().len()}</pre>
+					<div>{user_uuid().unwrap().to_string()}</div>
+					<list::List rows=stats_list />
 				</Show>
 			</Transition>
 		</div>
