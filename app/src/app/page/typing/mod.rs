@@ -6,12 +6,16 @@ mod stats;
 mod wrong_key_animation;
 
 use crate::schema::{quote::Quote, stats::Stats};
+use codee::string::{FromToStringCodec, OptionCodec};
 use leptos::prelude::*;
+use leptos_use::storage::use_local_storage;
 
 type Animation = (char, usize);
 
 #[component]
 pub fn Typing() -> impl IntoView {
+	let (user_uuid, set_user_uuid, _) =
+		use_local_storage::<Option<uuid::Uuid>, OptionCodec<FromToStringCodec>>("user-uuid");
 	let store_result = Action::new(|(user_uuid, stats): &(uuid::Uuid, Stats)| {
 		let user_uuid = user_uuid.clone();
 		let stats = stats.clone();
@@ -32,7 +36,12 @@ pub fn Typing() -> impl IntoView {
 		move || new_quote_requested.get(),
 		move |_, _, _| {
 			if index.get() > 0 {
-				store_result.dispatch((uuid::Uuid::new_v4(), stats.get()));
+				let user = user_uuid.get().unwrap_or_else(|| {
+					let user = uuid::Uuid::new_v4();
+					set_user_uuid.set(Some(user));
+					user
+				});
+				store_result.dispatch((user, stats.get()));
 			}
 			set_index.set(0);
 			set_stats.update(|stats| *stats = Stats::default());

@@ -11,6 +11,8 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 leptos = { version = "0.7" }
 leptos_router = { version = "0.7" }
+leptos-use = { version = "0.15", features = ["storage"] }
+codee = "*"
 axum = { version = "0.7", features = ["macros"], optional = true }
 console_error_panic_hook = { version = "0.1", optional = true }
 leptos_axum = { version = "0.7", optional = true }
@@ -48,6 +50,7 @@ ssr = [
 	"leptos/ssr",
 	"leptos_meta/ssr",
 	"leptos_router/ssr",
+	"leptos-use/ssr",
 ]
 
 # Defines a size-optimized profile for the WASM bundle in release mode
