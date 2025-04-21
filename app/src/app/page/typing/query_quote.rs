@@ -9,7 +9,7 @@ use crate::schema::quote::Anime;
 use crate::schema::quote::Quote;
 
 #[cfg(feature = "ssr")]
-const URL: &str = "https://animechan.io/api/v1/quotes/random";
+const URL: &str = "https://api.animechan.io/v1/quotes/random";
 
 #[cfg(feature = "ssr")]
 #[derive(Default, Deserialize, Debug, Clone)]
