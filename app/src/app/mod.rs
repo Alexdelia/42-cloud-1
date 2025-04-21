@@ -5,6 +5,7 @@ use leptos_meta::{MetaTags, Stylesheet, Title};
 use leptos_router::{
 	StaticSegment,
 	components::{Route, Router, Routes},
+	path,
 };
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
@@ -42,6 +43,7 @@ pub fn App() -> impl IntoView {
 			<main>
 				<Routes fallback=page::NotFound>
 					<Route path=StaticSegment("") view=page::Typing />
+					<Route path=path!("stats/:user_uuid") view=page::Stats />
 				</Routes>
 			</main>
 		</Router>

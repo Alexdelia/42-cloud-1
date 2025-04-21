@@ -35,15 +35,19 @@ impl From<StatsRow> for Stats {
 }
 
 #[server]
-pub async fn list() -> Result<Vec<Stats>, ServerFnError> {
+pub async fn list(user_uuid: Uuid) -> Result<Vec<Stats>, ServerFnError> {
 	let pool = use_context::<sqlx::PgPool>().ok_or_else::<ServerFnError, _>(|| {
 		ServerFnError::ServerError(String::from("no postgres connection pool"))
 	})?;
 
-	let stats = sqlx::query_as!(StatsRow, "SELECT * FROM stats")
-		.fetch_all(&pool)
-		.await
-		.map_err::<ServerFnError, _>(|e| ServerFnError::Deserialization(e.to_string()))?;
+	let stats = sqlx::query_as!(
+		StatsRow,
+		"SELECT * FROM stats WHERE user_uuid = $1",
+		user_uuid
+	)
+	.fetch_all(&pool)
+	.await
+	.map_err::<ServerFnError, _>(|e| ServerFnError::Deserialization(e.to_string()))?;
 	let stats = stats.into_iter().map(|row| row.into()).collect();
 
 	Ok(stats)
