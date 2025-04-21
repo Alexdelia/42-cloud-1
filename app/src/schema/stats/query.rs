@@ -1,16 +1,17 @@
-use super::Stats;
-use leptos::attr::Scope;
+use super::{Stats, StatsRow};
 use leptos::prelude::*;
 
 #[server]
-pub async fn list(cx: Scope) -> Result<Vec<Stats>, ServerFnError> {
-	let pool = use_context::<sqlx::PgPool>()
-		.ok_or_else(|| ServerFnError::ServerError(String::from("no postgres connection pool")))?;
+pub async fn list() -> Result<Vec<Stats>, ServerFnError> {
+	let pool = use_context::<sqlx::PgPool>().ok_or_else::<ServerFnError, _>(|| {
+		ServerFnError::ServerError(String::from("no postgres connection pool"))
+	})?;
 
-	let stats = sqlx::query!("SELECT * FROM stats")
+	let stats = sqlx::query_as!(StatsRow, "SELECT * FROM stats")
 		.fetch_all(&pool)
 		.await
-		.map_err(|e| ServerFnError::ServerError(e.to_string()))?;
+		.map_err::<ServerFnError, _>(|e| ServerFnError::Deserialization(e.to_string()))?;
+	let stats = stats.into_iter().map(|row| row.into()).collect();
 
 	Ok(stats)
 }
