@@ -1,3 +1,4 @@
+mod history;
 mod list;
 
 use crate::{app::page, schema::stats::Stats};
@@ -22,11 +23,6 @@ pub fn Stats() -> impl IntoView {
 			.and_then(|params| params.user_uuid)
 	};
 
-	let stats_list = Resource::new(
-		move || user_uuid(),
-		move |user_uuid| crate::schema::stats::query::list(user_uuid.unwrap_or_default()),
-	);
-
 	view! {
 		<div class="page_stats">
 			<Transition fallback=move || {
@@ -39,8 +35,13 @@ pub fn Stats() -> impl IntoView {
 					}
 					fallback=page::NotFound
 				>
-					<div>{user_uuid().unwrap().to_string()}</div>
-					<list::List rows=stats_list />
+					<div class="page_stats_loaded">
+						<history::History user_uuid=move || {
+							user_uuid.get().unwrap()
+						} />
+
+						<list::List rows=stats_list />
+					</div>
 				</Show>
 			</Transition>
 		</div>

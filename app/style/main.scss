@@ -1,12 +1,16 @@
 @use "var";
+
+@use "nav";
+@use "not_found";
+
 @use "page_typing";
 @use "typing_field";
 @use "stats_ongoing";
 @use "progress";
 @use "quote_origin";
 @use "wrong_key_animation";
-@use "not_found";
-@use "nav";
+
+@use "page_stats";
 
 @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Sono:wght@200..800&family=Syne+Mono&display=swap");
 
