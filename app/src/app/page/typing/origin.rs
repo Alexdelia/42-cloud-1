@@ -14,7 +14,7 @@ pub fn Origin(quote: Resource<Result<Quote, ServerFnError>>) -> impl IntoView {
 	view! {
 		<div class="quote_origin">
 			<span class="dash">"—"</span>
-			<span>{quote().character}</span>
+			<span>{move || quote().character}</span>
 		</div>
 	}
 }

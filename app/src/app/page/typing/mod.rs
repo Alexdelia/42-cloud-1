@@ -1,4 +1,5 @@
 mod field;
+mod nav;
 mod on_keydown;
 mod origin;
 mod progress;
@@ -82,6 +83,8 @@ pub fn Typing() -> impl IntoView {
 						view! { <p>"[Show] Finding a cool quote..."</p> }
 					}
 				>
+					<nav::Stats user_uuid=user_uuid />
+
 					<stats::Ongoing stats=stats />
 
 					<field::Field quote=quote index=index />
