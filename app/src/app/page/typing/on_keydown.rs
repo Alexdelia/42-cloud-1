@@ -18,10 +18,6 @@ pub fn set_event_listener(
 		let text = quote.text;
 		let index = index.get();
 
-		if state.get() == State::Typing && text.len() <= index {
-			set_state.set(State::Completed);
-			return;
-		}
 		let over = state.get() == State::Completed;
 
 		let key = event.key();
@@ -54,6 +50,10 @@ pub fn set_event_listener(
 		}
 
 		set_index.set(index + 1);
+		if state.get() == State::Typing && text.len() <= index + 1 {
+			set_state.set(State::Completed);
+			return;
+		}
 
 		if new_key {
 			set_stats.update(|stats| stats.correct_key += 1);
