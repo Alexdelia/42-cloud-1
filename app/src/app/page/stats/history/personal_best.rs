@@ -3,7 +3,10 @@ use uuid::Uuid;
 
 #[component]
 pub fn PersonalBest(user_uuid: Uuid) -> impl IntoView {
-	let pb = LocalResource::new(move || crate::schema::stats::query::personal_best(user_uuid));
+	let pb = Resource::new(
+		move || user_uuid,
+		move |user_uuid| crate::schema::stats::query::personal_best(user_uuid),
+	);
 
 	view! {
 		<Transition fallback=move || {
@@ -11,9 +14,7 @@ pub fn PersonalBest(user_uuid: Uuid) -> impl IntoView {
 		}>
 			<p>
 				{move || {
-					pb
-						.read()
-						.as_deref()
+					pb.get()
 						.map(|pb| {
 							match pb {
 								Ok(pb) => {
