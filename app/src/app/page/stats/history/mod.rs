@@ -1,16 +1,26 @@
 // mod list;
 mod personal_best;
+mod row;
 
-use crate::schema::stats::Stats;
 use leptos::prelude::*;
 use uuid::Uuid;
 
 #[component]
 pub fn History(user_uuid: Uuid) -> impl IntoView {
 	view! {
-		<div class="stats_history">
-			<personal_best::PersonalBest user_uuid=user_uuid />
-		// <list::List user_uuid=user_uuid />
-		</div>
+		<table>
+			<thead>
+				<tr>
+					<th>"date"</th>
+					<th>"wpm"</th>
+					<th>"accuracy"</th>
+					<th>"time"</th>
+				</tr>
+			</thead>
+			<tbody>
+				<personal_best::PersonalBest user_uuid=user_uuid />
+			// <list::List user_uuid=user_uuid />
+			</tbody>
+		</table>
 	}
 }

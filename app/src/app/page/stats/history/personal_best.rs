@@ -12,23 +12,16 @@ pub fn PersonalBest(user_uuid: Uuid) -> impl IntoView {
 		<Transition fallback=move || {
 			view! { <p>"Loading initial data..."</p> }
 		}>
-			<p>
-				{move || {
+			<Show
+				when=move || {
 					pb.get()
-						.map(|pb| {
-							match pb {
-								Ok(pb) => {
-									if let Some(pb) = pb {
-										format!("Your personal best is: {}", pb.wpm)
-									} else {
-										"Personal best not found".to_string()
-									}
-								}
-								Err(e) => format!("Error fetching personal best: {}", e),
-							}
-						})
-				}}
-			</p>
+						.map(|pb| pb.map(|pb| pb.is_some()).unwrap_or(false))
+						.unwrap_or(false)
+				}
+				fallback=move || ()
+			>
+				<super::row::Row row=pb.get().unwrap().unwrap().unwrap() />
+			</Show>
 		</Transition>
 	}
 }
