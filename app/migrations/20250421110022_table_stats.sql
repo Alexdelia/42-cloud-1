@@ -8,6 +8,7 @@ CREATE TABLE stats (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 
     CONSTRAINT end_after_start CHECK (end_time > start_time)
+    CONSTRAINT positive_key_count CHECK (correct_key + wrong_key > 0)
 );
 CREATE INDEX idx_stats_user_uuid ON stats (user_uuid);
 CREATE INDEX idx_stats_created_at ON stats (created_at);

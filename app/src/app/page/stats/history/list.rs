@@ -1,16 +1,16 @@
 use leptos::prelude::*;
 
 use crate::schema::stats::Stats;
-use uuid::Uuid;
 
 #[component]
-pub fn History(user_uuid: Uuid) -> impl IntoView {
-	let stats_list = Resource::new(
+pub fn List(user_uuid: Uuid) -> impl IntoView {
+	let rows = Resource::new(
 		move || user_uuid,
-		move |user_uuid| crate::schema::stats::query::list(user_uuid.unwrap_or_default()),
+		move |user_uuid| crate::schema::stats::query::list(user_uuid),
 	);
 
 	view! {
+		<
 		<table class="table">
 			<thead>
 				<tr>

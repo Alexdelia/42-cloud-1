@@ -1,5 +1,4 @@
 mod history;
-mod list;
 
 use crate::{app::page, schema::stats::Stats};
 use leptos::prelude::*;
@@ -29,18 +28,11 @@ pub fn Stats() -> impl IntoView {
 				view! { <p>"[Transition] getting stats..."</p> }
 			}>
 				<Show
-					when=move || {
-						user_uuid().is_some()
-							&& stats_list.get().map(|s| s.is_ok()).unwrap_or(false)
-					}
+					when=move || { user_uuid().is_some() }
 					fallback=page::NotFound
 				>
 					<div class="page_stats_loaded">
-						<history::History user_uuid=move || {
-							user_uuid.get().unwrap()
-						} />
-
-						<list::List rows=stats_list />
+						<history::History user_uuid=user_uuid().unwrap() />
 					</div>
 				</Show>
 			</Transition>

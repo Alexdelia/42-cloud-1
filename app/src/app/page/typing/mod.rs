@@ -40,7 +40,6 @@ pub fn Typing() -> impl IntoView {
 	Effect::watch(
 		move || state.get(),
 		move |state, _, _| {
-			dbg!(state);
 			match state {
 				State::Typing => {}
 				State::Completed => {
