@@ -1,4 +1,4 @@
-use crate::schema::stats::query::ComputedStatsRow;
+use crate::{app::dynamic_style, schema::stats::query::ComputedStatsRow};
 use chrono::Local;
 use leptos::prelude::*;
 
@@ -6,9 +6,13 @@ use leptos::prelude::*;
 pub fn Row(row: ComputedStatsRow) -> impl IntoView {
 	view! {
 		<tr>
-			<td>{format!("{:.1}", row.wpm)}</td>
-			<td>{format!("{:.2}%", row.accuracy)}</td>
-			<td>{row.duration_seconds}</td>
+			<td style=move || {
+				dynamic_style::wpm::gradient(row.wpm)
+			}>{format!("{:.1}", row.wpm)}</td>
+			<td style=move || {
+				dynamic_style::accuracy::gradient(row.accuracy)
+			}>{format!("{:.2}%", row.accuracy)}</td>
+			<td>{format!("{:.3}s", row.duration_seconds)}</td>
 			<td>
 				{row
 					.timestamp

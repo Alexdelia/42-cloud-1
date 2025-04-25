@@ -1,3 +1,4 @@
+pub mod dynamic_style;
 mod page;
 
 use leptos::prelude::*;
