@@ -8,7 +8,7 @@ use uuid::Uuid;
 #[component]
 pub fn History(user_uuid: Uuid) -> impl IntoView {
 	view! {
-		<table>
+		<table class="stats_history">
 			<thead>
 				<tr>
 					<th>"wpm"</th>
@@ -19,6 +19,9 @@ pub fn History(user_uuid: Uuid) -> impl IntoView {
 			</thead>
 			<tbody>
 				<personal_best::PersonalBest user_uuid=user_uuid />
+				<tr>
+					<td colspan="4" />
+				</tr>
 				<list::List user_uuid=user_uuid />
 			</tbody>
 		</table>
