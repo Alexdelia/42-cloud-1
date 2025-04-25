@@ -1,3 +1,4 @@
+mod global_compare;
 mod history;
 
 use crate::app::page;
@@ -35,7 +36,10 @@ pub fn Stats() -> impl IntoView {
 						{move || {
 							user_uuid()
 								.map(|user_uuid| {
-									view! { <history::History user_uuid=user_uuid /> }
+									view! {
+										<global_compare::GlobalCompare user_uuid=user_uuid />
+										<history::History user_uuid=user_uuid />
+									}
 								})
 						}}
 					</div>
