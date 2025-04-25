@@ -54,7 +54,7 @@ pub struct ComputedStatsRow {
 	pub wpm: f64,
 	pub accuracy: f64,
 
-	pub duration_seconds: i32,
+	pub duration_seconds: f32,
 }
 
 impl ComputedStatsRow {
