@@ -2,6 +2,8 @@ mod store;
 pub use store::store;
 mod personal_best;
 pub use personal_best::personal_best;
+mod list;
+pub use list::list;
 
 #[cfg(feature = "ssr")]
 mod raw;
@@ -11,7 +13,6 @@ use const_format::formatcp;
 
 use super::Stats;
 use chrono::{DateTime, Utc};
-use leptos::prelude::*;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -68,23 +69,4 @@ end_time as timestamp,\
 		accuracy = raw::ACCURACY,
 		duration = raw::DURATION_SECONDS,
 	);
-}
-
-#[server]
-pub async fn list(user_uuid: Uuid) -> Result<Vec<Stats>, ServerFnError> {
-	let pool = use_context::<sqlx::PgPool>().ok_or_else::<ServerFnError, _>(|| {
-		ServerFnError::ServerError(String::from("no postgres connection pool"))
-	})?;
-
-	let stats = sqlx::query_as!(
-		StatsRow,
-		"SELECT * FROM stats WHERE user_uuid = $1 ORDER BY created_at DESC",
-		user_uuid
-	)
-	.fetch_all(&pool)
-	.await
-	.map_err::<ServerFnError, _>(|e| ServerFnError::Deserialization(e.to_string()))?;
-	let stats = stats.into_iter().map(|row| row.into()).collect();
-
-	Ok(stats)
 }

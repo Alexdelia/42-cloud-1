@@ -1,4 +1,4 @@
-// mod list;
+mod list;
 mod personal_best;
 mod row;
 
@@ -11,15 +11,15 @@ pub fn History(user_uuid: Uuid) -> impl IntoView {
 		<table>
 			<thead>
 				<tr>
-					<th>"date"</th>
 					<th>"wpm"</th>
 					<th>"accuracy"</th>
 					<th>"time"</th>
+					<th>"date"</th>
 				</tr>
 			</thead>
 			<tbody>
 				<personal_best::PersonalBest user_uuid=user_uuid />
-			// <list::List user_uuid=user_uuid />
+				<list::List user_uuid=user_uuid />
 			</tbody>
 		</table>
 	}

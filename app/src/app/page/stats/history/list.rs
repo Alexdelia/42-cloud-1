@@ -1,6 +1,5 @@
 use leptos::prelude::*;
-
-use crate::schema::stats::Stats;
+use uuid::Uuid;
 
 #[component]
 pub fn List(user_uuid: Uuid) -> impl IntoView {
@@ -10,30 +9,18 @@ pub fn List(user_uuid: Uuid) -> impl IntoView {
 	);
 
 	view! {
-		<
-		<table class="table">
-			<thead>
-				<tr>
-					<th>"Date"</th>
-					<th>"WPM"</th>
-					<th>"Accuracy"</th>
-				</tr>
-			</thead>
-			<tbody>
-				<For
-					each=rows
-					key=|row| row.end_time
-					children=move |row| {
-						view! {
-							<tr>
-								<td>{row.end_time.to_string()}</td>
-								<td>{row.wpm()}</td>
-								<td>{row.accuracy()}</td>
-							</tr>
-						}
-					}
-				/>
-			</tbody>
-		</table>
+		<Transition>
+			{move || {
+				(match rows.get() {
+					Some(Ok(rows)) => Some(rows),
+					_ => None,
+				})
+					.map(|rows| {
+						rows.into_iter()
+							.map(|row| view! { <super::row::Row row=row /> })
+							.collect_view()
+					})
+			}}
+		</Transition>
 	}
 }
