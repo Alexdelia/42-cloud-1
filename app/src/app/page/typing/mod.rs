@@ -90,7 +90,7 @@ pub fn Typing() -> impl IntoView {
 
 					<progress::Progress
 						value=index
-						max=quote.get().unwrap().unwrap().text.len()
+						max=quote.get().expect("err").expect("err").text.len()
 					/>
 
 					<origin::Origin quote=quote />

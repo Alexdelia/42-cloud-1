@@ -18,7 +18,9 @@ pub fn Stats(user_uuid: Signal<Option<Uuid>>) -> impl IntoView {
 	view! {
 		<Show when=move || { uuid.get().is_some() } fallback=|| ()>
 			<div class="stats_redirect_btn">
-				<A href=move || format!("/stats/{}", uuid.get().unwrap())>
+				<A href=move || {
+					format!("/stats/{}", uuid.get().expect("user_uuid is None"))
+				}>
 					// https://fonts.google.com/icons?selected=Material+Symbols+Rounded:bar_chart:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=chart&icon.size=24&icon.color=%23e3e3e3&icon.style=Rounded
 					<svg
 						xmlns="http://www.w3.org/2000/svg"

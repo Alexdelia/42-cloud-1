@@ -1,6 +1,6 @@
 mod history;
 
-use crate::{app::page, schema::stats::Stats};
+use crate::app::page;
 use leptos::prelude::*;
 use leptos_router::hooks::use_params;
 use leptos_router::params::Params;
@@ -32,7 +32,12 @@ pub fn Stats() -> impl IntoView {
 					fallback=page::NotFound
 				>
 					<div class="page_stats_loaded">
-						<history::History user_uuid=user_uuid().unwrap() />
+						{move || {
+							user_uuid()
+								.map(|user_uuid| {
+									view! { <history::History user_uuid=user_uuid /> }
+								})
+						}}
 					</div>
 				</Show>
 			</Transition>

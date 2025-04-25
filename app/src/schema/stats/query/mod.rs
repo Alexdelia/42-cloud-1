@@ -45,7 +45,7 @@ impl From<StatsRow> for Stats {
 	}
 }
 
-#[derive(Clone, Serialize, Deserialize, Debug)]
+#[derive(Clone, Serialize, Deserialize, Debug, Default)]
 #[cfg_attr(feature = "ssr", derive(FromRow))]
 pub struct ComputedStatsRow {
 	pub timestamp: DateTime<Utc>,

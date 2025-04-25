@@ -39,7 +39,7 @@ impl AppState {
 			.expect("failed to connect to postgres and create pool");
 
 		Self {
-			leptos_options: get_configuration(None).unwrap().leptos_options,
+			leptos_options: get_configuration(None).expect("failed to get configuration").leptos_options,
 			pool,
 			// client: reqwest::Client::new(),
 		}
@@ -98,11 +98,11 @@ async fn main() {
 		.fallback(leptos_axum::file_and_error_handler::<AppState, _>(shell))
 		.with_state(state);
 
-	let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+	let listener = tokio::net::TcpListener::bind(&addr).await.expect("failed to bind to address");
 	log!("🟢 http://{}", &addr);
 	axum::serve(listener, app.into_make_service())
 		.await
-		.unwrap();
+		.expect("failed to start server");
 }
 
 } else {
