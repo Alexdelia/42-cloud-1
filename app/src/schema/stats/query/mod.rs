@@ -4,6 +4,8 @@ mod personal_best;
 pub use personal_best::personal_best;
 mod list;
 pub use list::list;
+mod global_compare;
+pub use global_compare::{StatsGlobalCompare, global_compare};
 
 #[cfg(feature = "ssr")]
 mod raw;
@@ -46,7 +48,7 @@ impl From<StatsRow> for Stats {
 	}
 }
 
-#[derive(Clone, Serialize, Deserialize, Debug, Default)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 #[cfg_attr(feature = "ssr", derive(FromRow))]
 pub struct ComputedStatsRow {
 	pub timestamp: DateTime<Utc>,
