@@ -1,7 +1,4 @@
 .stats_history {
-	width: 112rem;
-	margin-right: 1rem;
-
 	transition: all 1s ease-in-out;
 
 	border-spacing: 0;
@@ -11,6 +8,7 @@
 	th {
 		font-family: "Sono", monospace;
 		font-size: 1.5rem;
+		font-weight: normal;
 		color: hsl(0, 0%, 70%);
 
 		text-align: center;

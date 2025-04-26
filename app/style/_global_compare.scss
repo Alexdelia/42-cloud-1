@@ -1,3 +1,44 @@
 .stats_global_compare {
-	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.stats_row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.stats_bubble {
+	width: 10rem;
+	height: 10rem;
+
+	border-radius: 50%;
+	border: 0.5rem solid hsl(280, 100%, 70%);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	.stats_bubble_title {
+		font-family: "Sono", monospace;
+		font-size: 1.5rem;
+
+		color: hsl(0, 0%, 70%);
+	}
+
+	.stats_bubble_user,
+	.stats_bubble_global {
+		font-family: "Courier Prime", monospace;
+		font-size: 2rem;
+
+		color: hsl(0, 0%, 80%);
+
+		svg {
+			opacity: 0.5;
+		}
+	}
 }
