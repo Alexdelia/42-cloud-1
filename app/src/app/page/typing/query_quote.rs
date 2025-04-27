@@ -56,7 +56,6 @@ impl From<QuoteResponse> for Quote {
 
 #[server]
 pub async fn query_quote() -> Result<Quote, ServerFnError> {
-	return Ok(QuoteResponse::default().into());
 	let res = reqwest::get(URL).await;
 
 	let Ok(res) = res else {
