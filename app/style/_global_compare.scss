@@ -12,6 +12,8 @@
 .stats_row {
 	flex-grow: 1;
 
+	width: 100%;
+
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
@@ -19,8 +21,8 @@
 }
 
 .stats_bubble {
-	width: 10rem;
-	height: 10rem;
+	width: 12rem;
+	height: 12rem;
 
 	border-radius: 50%;
 	border: 0.5rem solid hsl(280, 100%, 70%);
