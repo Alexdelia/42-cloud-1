@@ -2,7 +2,7 @@ use const_format::formatcp;
 
 const PRECISION: &str = "REAL";
 
-const KEY_COUNT: &str = r#"(correct_key + wrong_key)"#;
+pub const KEY_COUNT: &str = r#"(correct_key + wrong_key)"#;
 const WORDS: &str = formatcp!("({KEY_COUNT}::{PRECISION} / 5.0)");
 
 const DURATION: &str = r#"(end_time - start_time)"#;
