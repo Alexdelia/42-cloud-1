@@ -21,7 +21,6 @@ pub struct StatsCompareResult {
 	pub accuracy: StatsAvgMed,
 	pub key_sum: i64,
 	pub time_sum: f32,
-	pub row_count: i64,
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
@@ -39,14 +38,12 @@ struct StatsGlobalCompareRow {
 	user_accuracy_median: f64,
 	user_key_sum: i64,
 	user_time_sum: f32,
-	user_row_count: i64,
 	global_wpm_average: f64,
 	global_wpm_median: f64,
 	global_accuracy_average: f64,
 	global_accuracy_median: f64,
 	global_key_sum: i64,
 	global_time_sum: f32,
-	global_row_count: i64,
 }
 
 impl From<StatsGlobalCompareRow> for StatsGlobalCompare {
@@ -63,7 +60,6 @@ impl From<StatsGlobalCompareRow> for StatsGlobalCompare {
 				},
 				key_sum: row.user_key_sum,
 				time_sum: row.user_time_sum,
-				row_count: row.user_row_count,
 			},
 			global: StatsCompareResult {
 				wpm: StatsAvgMed {
@@ -76,7 +72,6 @@ impl From<StatsGlobalCompareRow> for StatsGlobalCompare {
 				},
 				key_sum: row.global_key_sum,
 				time_sum: row.global_time_sum,
-				row_count: row.global_row_count,
 			},
 		}
 	}
@@ -121,8 +116,6 @@ SELECT
         AS user_key_sum,
     (SELECT SUM(duration_seconds) FROM user_stats)
         AS user_time_sum,
-    (SELECT COUNT(*) FROM user_stats)
-        AS user_row_count,
     (SELECT AVG(wpm) FROM global_stats)
         AS global_wpm_average,
     (SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY wpm) FROM global_stats)
@@ -134,9 +127,7 @@ SELECT
     (SELECT SUM(key_count) FROM global_stats)
         AS global_key_sum,
     (SELECT SUM(duration_seconds) FROM global_stats)
-        AS global_time_sum,
-    (SELECT COUNT(*) FROM global_stats)
-        AS global_row_count"
+        AS global_time_sum"
 	))
 	.bind(user_uuid)
 	.fetch_optional(&pool)
