@@ -4,6 +4,8 @@ use bubble::StatsBubble;
 use leptos::prelude::*;
 use uuid::Uuid;
 
+use crate::app::dynamic_style;
+
 #[component]
 pub fn GlobalCompare(user_uuid: Uuid) -> impl IntoView {
 	let res = Resource::new(
@@ -22,17 +24,32 @@ pub fn GlobalCompare(user_uuid: Uuid) -> impl IntoView {
 						view! {
 							<div class="stats_global_compare">
 								<div class="stats_row">
-
 									<StatsBubble
 										title="wpm avg".to_owned()
-										user=stats.user.wpm.average.to_string()
-										global="69.0"
+										user=view! {
+											<span style=dynamic_style::wpm::gradient(
+												stats.user.wpm.average,
+											)>{format!("{:.1}", stats.user.wpm.average)}</span>
+										}
+										global=view! {
+											<span style=dynamic_style::wpm::gradient(
+												stats.global.wpm.average,
+											)>{format!("{:.1}", stats.global.wpm.average)}</span>
+										}
 									/>
 
 									<StatsBubble
 										title="wpm med".to_owned()
-										user="42.0"
-										global="69.0"
+										user=view! {
+											<span style=dynamic_style::wpm::gradient(
+												stats.user.wpm.median,
+											)>{format!("{:.1}", stats.user.wpm.median)}</span>
+										}
+										global=view! {
+											<span style=dynamic_style::wpm::gradient(
+												stats.global.wpm.median,
+											)>{format!("{:.1}", stats.global.wpm.median)}</span>
+										}
 									/>
 								</div>
 
