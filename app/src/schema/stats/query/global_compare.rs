@@ -1,4 +1,3 @@
-use super::ComputedStatsRow;
 use leptos::prelude::*;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -12,23 +11,23 @@ use sqlx::prelude::FromRow;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct StatsGlobalCompare {
-	user: StatsCompareResult,
-	global: StatsCompareResult,
+	pub user: StatsCompareResult,
+	pub global: StatsCompareResult,
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct StatsCompareResult {
-	wpm: StatsAvgMed,
-	accuracy: StatsAvgMed,
-	key_sum: i32,
-	time_sum: i32,
-	row_count: i32,
+	pub wpm: StatsAvgMed,
+	pub accuracy: StatsAvgMed,
+	pub key_sum: i64,
+	pub time_sum: f32,
+	pub row_count: i64,
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct StatsAvgMed {
-	average: f64,
-	median: f64,
+	pub average: f64,
+	pub median: f64,
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
@@ -38,16 +37,16 @@ struct StatsGlobalCompareRow {
 	user_wpm_median: f64,
 	user_accuracy_average: f64,
 	user_accuracy_median: f64,
-	user_key_sum: i32,
-	user_time_sum: i32,
-	user_row_count: i32,
+	user_key_sum: i64,
+	user_time_sum: f32,
+	user_row_count: i64,
 	global_wpm_average: f64,
 	global_wpm_median: f64,
 	global_accuracy_average: f64,
 	global_accuracy_median: f64,
-	global_key_sum: i32,
-	global_time_sum: i32,
-	global_row_count: i32,
+	global_key_sum: i64,
+	global_time_sum: f32,
+	global_row_count: i64,
 }
 
 impl From<StatsGlobalCompareRow> for StatsGlobalCompare {
@@ -120,7 +119,7 @@ SELECT
         AS user_accuracy_median,
     (SELECT SUM(key_count) FROM user_stats)
         AS user_key_sum,
-    (SELECT SUM(EXTRACT(EPOCH FROM duration)) FROM user_stats)
+    (SELECT SUM(duration_seconds) FROM user_stats)
         AS user_time_sum,
     (SELECT COUNT(*) FROM user_stats)
         AS user_row_count,
@@ -134,11 +133,10 @@ SELECT
         AS global_accuracy_median,
     (SELECT SUM(key_count) FROM global_stats)
         AS global_key_sum,
-    (SELECT SUM(EXTRACT(EPOCH FROM duration)) FROM global_stats)
+    (SELECT SUM(duration_seconds) FROM global_stats)
         AS global_time_sum,
     (SELECT COUNT(*) FROM global_stats)
-        AS global_row_count,
-)"
+        AS global_row_count"
 	))
 	.bind(user_uuid)
 	.fetch_optional(&pool)
