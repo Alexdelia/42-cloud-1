@@ -5,7 +5,7 @@ use uuid::Uuid;
 pub fn PersonalBest(user_uuid: Uuid) -> impl IntoView {
 	let pb = Resource::new(
 		move || user_uuid,
-		move |user_uuid| crate::schema::stats::query::personal_best(user_uuid),
+		crate::schema::stats::query::personal_best,
 	);
 
 	view! {

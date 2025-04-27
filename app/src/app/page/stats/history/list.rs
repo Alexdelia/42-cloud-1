@@ -3,10 +3,7 @@ use uuid::Uuid;
 
 #[component]
 pub fn List(user_uuid: Uuid) -> impl IntoView {
-	let rows = Resource::new(
-		move || user_uuid,
-		move |user_uuid| crate::schema::stats::query::list(user_uuid),
-	);
+	let rows = Resource::new(move || user_uuid, crate::schema::stats::query::list);
 
 	view! {
 		<Transition>

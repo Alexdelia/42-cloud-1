@@ -10,7 +10,7 @@ use crate::app::dynamic_style;
 pub fn GlobalCompare(user_uuid: Uuid) -> impl IntoView {
 	let res = Resource::new(
 		move || user_uuid,
-		move |user_uuid| crate::schema::stats::query::global_compare(user_uuid),
+		crate::schema::stats::query::global_compare,
 	);
 
 	view! {
