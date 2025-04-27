@@ -53,6 +53,59 @@ pub fn GlobalCompare(user_uuid: Uuid) -> impl IntoView {
 									/>
 								</div>
 
+								<div class="stats_row">
+									<StatsBubble
+										title="acc avg".to_owned()
+										user=view! {
+											<span style=dynamic_style::accuracy::gradient(
+												stats.user.accuracy.average,
+											)>{format!("{:.2}%", stats.user.accuracy.average)}</span>
+										}
+										global=view! {
+											<span style=dynamic_style::accuracy::gradient(
+												stats.global.accuracy.average,
+											)>{format!("{:.2}%", stats.global.accuracy.average)}</span>
+										}
+									/>
+
+									<StatsBubble
+										title="acc med".to_owned()
+										user=view! {
+											<span style=dynamic_style::accuracy::gradient(
+												stats.user.accuracy.median,
+											)>{format!("{:.2}%", stats.user.accuracy.median)}</span>
+										}
+										global=view! {
+											<span style=dynamic_style::accuracy::gradient(
+												stats.global.accuracy.median,
+											)>{format!("{:.2}%", stats.global.accuracy.median)}</span>
+										}
+									/>
+								</div>
+
+								<div class="stats_row">
+									<StatsBubble
+										title="key sum".to_owned()
+										user=view! {
+											// TODO: locale format
+											<span>{format!("{}", stats.user.key_sum)}</span>
+										}
+										global=view! {
+											<span>{format!("{}", stats.global.key_sum)}</span>
+										}
+									/>
+
+									<StatsBubble
+										title="time sum".to_owned()
+										user=view! {
+											// TODO: locale format
+											<span>{format!("{}", stats.user.time_sum)}</span>
+										}
+										global=view! {
+											<span>{format!("{}", stats.global.time_sum)}</span>
+										}
+									/>
+								</div>
 							</div>
 						}
 					})
