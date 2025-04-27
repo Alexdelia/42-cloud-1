@@ -10,19 +10,22 @@ use const_format::formatcp;
 #[cfg(feature = "ssr")]
 use sqlx::prelude::FromRow;
 
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct StatsGlobalCompare {
 	user: StatsCompareResult,
 	global: StatsCompareResult,
 }
 
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct StatsCompareResult {
 	wpm: StatsAvgMed,
 	accuracy: StatsAvgMed,
-	key_sum: usize,
-	time_sum: usize,
-	row_count: usize,
+	key_sum: i32,
+	time_sum: i32,
+	row_count: i32,
 }
 
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct StatsAvgMed {
 	average: f64,
 	median: f64,
@@ -35,16 +38,16 @@ struct StatsGlobalCompareRow {
 	user_wpm_median: f64,
 	user_accuracy_average: f64,
 	user_accuracy_median: f64,
-	user_key_sum: usize,
-	user_time_sum: usize,
-	user_row_count: usize,
+	user_key_sum: i32,
+	user_time_sum: i32,
+	user_row_count: i32,
 	global_wpm_average: f64,
 	global_wpm_median: f64,
 	global_accuracy_average: f64,
 	global_accuracy_median: f64,
-	global_key_sum: usize,
-	global_time_sum: usize,
-	global_row_count: usize,
+	global_key_sum: i32,
+	global_time_sum: i32,
+	global_row_count: i32,
 }
 
 impl From<StatsGlobalCompareRow> for StatsGlobalCompare {
@@ -145,5 +148,5 @@ SELECT
 		ServerFnError::Deserialization(e.to_string())
 	})?;
 
-	Ok(res.into())
+	Ok(res.map(|r| r.into()))
 }
