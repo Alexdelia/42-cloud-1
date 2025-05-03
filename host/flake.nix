@@ -13,7 +13,7 @@
     nixpkgs,
     deploy-rs,
     ...
-  }: let
+  } @ inputs: let
     system = "x86_64-linux";
     hostname = "cloud-1";
     user = "alex";
@@ -40,5 +40,10 @@
     };
 
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
+    devShells.${system}.default = let
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
+      pkgs.callPackage ./shell.nix {inherit pkgs inputs;};
   };
 }
