@@ -11,6 +11,8 @@
     ./openssh.nix
 
     ./user.nix
+
+    ./docker.nix
   ];
 
   nix = {
