@@ -2,6 +2,7 @@
   lib,
   pkgs,
   hostname,
+  user,
   ...
 }: {
   imports = [
@@ -15,6 +16,8 @@
   nix = {
     settings = {
       experimental-features = ["nix-command" "flakes"];
+
+      trusted-users = [user];
     };
   };
 
@@ -24,6 +27,8 @@
     curl
     gitMinimal
   ]);
+
+  security.sudo.wheelNeedsPassword = false;
 
   system.stateVersion = "24.11";
 }

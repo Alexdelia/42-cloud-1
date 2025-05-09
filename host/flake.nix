@@ -18,7 +18,7 @@
     hostname = "cloud-1";
     user = "alex";
   in {
-    nixosConfigurations.cloud-1 = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
       inherit system;
 
       modules = [
@@ -34,7 +34,8 @@
       inherit hostname;
 
       profiles.system = {
-        inherit user;
+        # inherit user;
+        user = "root";
         path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.${hostname};
       };
     };
