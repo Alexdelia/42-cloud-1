@@ -72,17 +72,12 @@ pub fn Typing() -> impl IntoView {
 
 	view! {
 		<div class="page_typing_container">
-			<Transition fallback=move || {
-				view! { <p>"[Transition] Finding a cool quote..."</p> }
+			<Suspense fallback=move || {
+				view! { <span class="loader" /> }
 			}>
-				<Show
-					when=move || {
-						quote.get().map(|q| q.is_ok()).unwrap_or(false)
-					}
-					fallback=|| {
-						view! { <p>"[Show] Finding a cool quote..."</p> }
-					}
-				>
+				<Show when=move || {
+					quote.get().map(|q| q.is_ok()).unwrap_or(false)
+				}>
 					<nav::Stats user_uuid=user_uuid />
 
 					<stats::Ongoing stats=stats />
@@ -96,7 +91,7 @@ pub fn Typing() -> impl IntoView {
 
 					<origin::Origin quote=quote />
 				</Show>
-			</Transition>
+			</Suspense>
 		</div>
 
 		<wrong_key_animation::WrongKeyAnimations animations=animations />

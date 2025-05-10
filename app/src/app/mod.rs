@@ -23,7 +23,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
 				<HydrationScripts options />
 				<MetaTags />
 			</head>
-			<body>
+			<body style="background-color: hsl(0, 0%, 20%);">
 				<App />
 			</body>
 		</html>

@@ -26,7 +26,7 @@ pub fn Stats() -> impl IntoView {
 	view! {
 		<div class="page_stats">
 			<Transition fallback=move || {
-				view! { <p>"[Transition] getting stats..."</p> }
+				view! { <span class="loader" /> }
 			}>
 				<Show
 					when=move || { user_uuid().is_some() }
