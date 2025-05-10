@@ -9,21 +9,21 @@ publish = false
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-leptos = { version = "0.7" }
-leptos_router = { version = "0.7" }
-leptos-use = { version = "0.15", features = ["storage"] }
+leptos = { version = "0.8" }
+leptos_router = { version = "0.8" }
+leptos-use = { version = "0.16.0-beta", features = ["storage"] }
 codee = "*"
-axum = { version = "0.7", features = ["macros"], optional = true }
+axum = { version = "0.8", features = ["macros"], optional = true }
 console_error_panic_hook = { version = "0.1", optional = true }
-leptos_axum = { version = "0.7", optional = true }
-leptos_meta = { version = "0.7" }
+leptos_axum = { version = "0.8", optional = true }
+leptos_meta = { version = "0.8" }
 tokio = { version = "1", features = ["rt-multi-thread"], optional = true }
 wasm-bindgen = { version = "=0.2.100", optional = true }
 chrono = { version = "0.4", features = ["serde"] }
 uuid = { version = "1", features = ["serde", "v4", "js"] }
 serde = { version = "1", features = ["derive"] }
 reqwest = { version = "0.12", features = ["json"] }
-serde_json = "1.0.140"
+serde_json = "1"
 dotenv = { version = "0.15", optional = true }
 dotenv_codegen = { version = "0.15", optional = true }
 const_format = { version = "0.2", optional = true }
