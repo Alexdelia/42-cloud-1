@@ -43,15 +43,12 @@ pub fn Typing() -> impl IntoView {
 			match state {
 				State::Typing => {}
 				State::Completed => {
-					let user = move || {
-						user_uuid.get().unwrap_or_else(|| {
-							let user = uuid::Uuid::new_v4();
-							set_user_uuid.set(Some(user));
-							user
-						})
-					};
-					let stats = move || stats.get();
-					store_result.dispatch((user(), stats()));
+					let user = user_uuid.get_untracked().unwrap_or_else(|| {
+						let user = uuid::Uuid::new_v4();
+						set_user_uuid.set(Some(user));
+						user
+					});
+					store_result.dispatch((user, stats.get_untracked()));
 				}
 				State::Reset => {
 					set_index.set(0);
