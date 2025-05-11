@@ -8,9 +8,9 @@ base.craneLib.buildPackage {
 
   buildPhaseCargoCommand = ''
     cargoBuildLog=$(mktemp cargoBuildLogXXXX.json)
-    cargo leptos build --release -vvv
+    SQLX_OFFLINE=true cargo leptos build --release -vvv
   '';
-  cargoTestCommand = "cargo leptos test --release -vvv #";
+  cargoTestCommand = "SQLX_OFFLINE=true cargo leptos test --release -vvv #";
 
   nativeBuildInputs = with pkgs;
     [

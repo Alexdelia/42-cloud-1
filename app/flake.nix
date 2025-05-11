@@ -55,6 +55,16 @@
                   (file: lib.any file.hasExt ["html" "scss"])
                   ./.
                 )
+                (
+                  lib.fileset.fileFilter
+                  (file: lib.any file.hasExt ["json"])
+                  ./.sqlx
+                )
+                (
+                  lib.fileset.fileFilter
+                  (file: lib.any file.hasExt ["sql"])
+                  ./migrations
+                )
                 (lib.fileset.maybeMissing ./public)
                 (lib.fileset.maybeMissing ./.env)
               ];
