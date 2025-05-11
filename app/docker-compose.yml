@@ -1,7 +1,33 @@
 # the use of ${VAR?"my error message"} defines a required variable
+# the use of ${VAR:-default} defines a default value
 # see https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/#interpolation-syntax
 
 services:
+  app:
+    # not defining `image` section as long as not pushing to registry
+
+    # https://docs.docker.com/reference/compose-file/build/
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: ${PROJECT_NAME}-app
+
+    # https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/
+    environment:
+      - LEPTOS_SITE_ADDR="0.0.0.0:${APP_PORT:-3000}"
+      - RUST_LOG="debug"
+
+    ports:
+      - ${APP_PORT:-3000}:${APP_PORT:-3000}
+
+    # TODO: create a health check endpoint
+
+    restart: unless-stopped
+
+    depends_on:
+      - db
+
   db:
     # https://hub.docker.com/_/postgres
     # specify the version so upgrades are not automatic
