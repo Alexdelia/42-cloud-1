@@ -1,5 +1,6 @@
 mod global_compare;
 mod history;
+mod nav;
 
 use crate::app::page;
 use leptos::prelude::*;
@@ -25,6 +26,8 @@ pub fn Stats() -> impl IntoView {
 
 	view! {
 		<div class="page_stats">
+			<nav::Typing />
+
 			<Transition fallback=move || {
 				view! { <span class="loader" /> }
 			}>

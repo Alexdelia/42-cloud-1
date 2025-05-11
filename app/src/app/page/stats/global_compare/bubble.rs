@@ -6,7 +6,7 @@ pub fn StatsBubble(title: String, user: impl IntoView, global: impl IntoView) ->
 		<div class="stats_bubble">
 			<div class="stats_bubble_title">{title}</div>
 			<div class="stats_bubble_user">
-				// https://fonts.google.com/icons?selected=Material+Symbols+Rounded:person:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=user&icon.size=24&icon.color=%23e3e3e3&icon.style=Rounded
+				// https://fonts.google.com/icons?selected=Material+Symbols+Rounded:person:FILL@0;wght@400;GRAD@0;opsz@24
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					height="1.25rem"
@@ -19,7 +19,7 @@ pub fn StatsBubble(title: String, user: impl IntoView, global: impl IntoView) ->
 				{user}
 			</div>
 			<div class="stats_bubble_global">
-				// https://fonts.google.com/icons?selected=Material+Symbols+Rounded:language:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=glob&icon.size=24&icon.color=%23e3e3e3&icon.style=Rounded
+				// https://fonts.google.com/icons?selected=Material+Symbols+Rounded:language:FILL@0;wght@400;GRAD@0;opsz@24
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					height="1.25rem"
