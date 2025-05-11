@@ -1,0 +1,12 @@
+{
+	"db_name": "PostgreSQL",
+	"query": "INSERT INTO\n\tstats\n\t(\n\t\tuser_uuid,\n\t\tstart_time,\n\t\tend_time,\n\t\tcorrect_key,\n\t\twrong_key\n\t)\nVALUES ($1, $2, $3, $4, $5)",
+	"describe": {
+		"columns": [],
+		"parameters": {
+			"Left": ["Uuid", "Timestamptz", "Timestamptz", "Int4", "Int4"]
+		},
+		"nullable": []
+	},
+	"hash": "54e988a5dbb456fd22c104ee56eaa809951a6929a6807fc2f7093f48b727544a"
+}
