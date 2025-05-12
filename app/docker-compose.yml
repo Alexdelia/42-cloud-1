@@ -15,8 +15,8 @@ services:
 
     # https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/
     environment:
-      - LEPTOS_SITE_ADDR="0.0.0.0:${APP_PORT:-3000}"
-      - RUST_LOG="debug"
+      LEPTOS_SITE_ADDR: "0.0.0.0:${APP_PORT:-3000}"
+      RUST_LOG: info
 
     ports:
       - ${APP_PORT:-3000}:${APP_PORT:-3000}

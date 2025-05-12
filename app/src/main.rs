@@ -29,7 +29,8 @@ impl AppState {
 		let pool = sqlx::postgres::PgPoolOptions::new()
 			.max_connections(8)
 			.connect(const_format::formatcp!(
-				"postgres://{username}:{password}@localhost:{port}/{dbname}",
+				"postgres://{username}:{password}@{host}:{port}/{dbname}",
+				host = dotenv!("DB_HOST"),
 				username = dotenv!("PROJECT_NAME"),
 				password = dotenv!("DB_PASSWORD"),
 				port = dotenv!("DB_PORT"),

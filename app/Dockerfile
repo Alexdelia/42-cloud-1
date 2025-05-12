@@ -12,13 +12,16 @@ RUN nix \
 	--experimental-features 'nix-command flakes' \
 	build
 
-FROM nixos/nix:latest AS runtime
+# FROM nixos/nix:latest AS runtime
 
-COPY --from=builder /build/result /app
+# COPY --from=builder /build/result /app
+
+WORKDIR /app
 
 # `environment` section in `docker-compose.yml` will override `ENV`
 # those are default values
 ENV LEPTOS_SITE_ADDR="0.0.0.0:3000"
 ENV RUST_LOG="info"
 
-CMD ["/app/bin/cloud-1"]
+# CMD ["/app/bin/cloud-1"]
+CMD ["/build/result/bin/cloud-1"]
