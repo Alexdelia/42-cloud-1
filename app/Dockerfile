@@ -1,20 +1,27 @@
 # https://docs.docker.com/build/building/multi-stage/
 FROM nixos/nix:latest AS builder
 
-# setup work environment
 RUN mkdir -p /build
 WORKDIR /build
 
 COPY . .
 
-# build the project
 RUN nix \
 	--experimental-features 'nix-command flakes' \
 	build
 
-# FROM nixos/nix:latest AS runtime
+RUN mkdir /tmp/nix-store-closure
+RUN cp -R $(nix-store -qR result/) /tmp/nix-store-closure
+RUN echo $(nix-store -q result) > /tmp/nix-store-target
 
-# COPY --from=builder /build/result /app
+
+# FROM scratch AS runtime
+FROM nixos/nix:latest AS runtime
+
+COPY --from=builder /tmp/nix-store-closure /nix/store
+COPY --from=builder /tmp/nix-store-target /tmp/nix-store-target
+RUN ln -s /nix/store/$(cat /tmp/nix-store-target) /app
+RUN rm /tmp/nix-store-target
 
 WORKDIR /app
 
@@ -23,5 +30,4 @@ WORKDIR /app
 ENV LEPTOS_SITE_ADDR="0.0.0.0:3000"
 ENV RUST_LOG="info"
 
-# CMD ["/app/bin/cloud-1"]
-CMD ["/build/result/bin/cloud-1"]
+CMD ["/app/bin/cloud-1"]
