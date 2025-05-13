@@ -71,7 +71,13 @@ pub fn Typing() -> impl IntoView {
 	);
 
 	view! {
-		<div class="page_typing_container">
+		<div class=move || {
+			let mut c = String::from("page_typing_container");
+			if state.get() == State::Completed {
+				c.push_str(" page_typing_container_completed");
+			}
+			c
+		}>
 			<Suspense fallback=move || {
 				view! { <span class="loader" /> }
 			}>
@@ -80,7 +86,7 @@ pub fn Typing() -> impl IntoView {
 				}>
 					<nav::Stats user_uuid=user_uuid />
 
-					<stats::Ongoing stats=stats />
+					<stats::Ongoing stats=stats state=state />
 
 					<field::Field quote=quote index=index />
 

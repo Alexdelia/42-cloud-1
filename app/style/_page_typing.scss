@@ -14,3 +14,23 @@
 
 	background-color: var.$background-color;
 }
+
+.page_typing_container_completed {
+	animation: 2s linear innerPopFade;
+}
+
+@keyframes innerPopFade {
+	0% {
+		box-shadow: none;
+	}
+	10% {
+		box-shadow:
+			0 0 0.3rem hsla(300, 50%, 75%, 50%),
+			0 0 0.6rem hsla(300, 50%, 75%, 40%),
+			0 0 0.9rem hsla(300, 50%, 75%, 30%),
+			0 0 1.2rem hsla(300, 50%, 75%, 20%);
+	}
+	100% {
+		box-shadow: none;
+	}
+}

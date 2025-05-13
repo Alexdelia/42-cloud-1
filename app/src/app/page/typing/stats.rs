@@ -1,14 +1,22 @@
 use leptos::prelude::*;
 
-use crate::app::{dynamic_style, page::typing::Stats};
+use crate::app::dynamic_style;
+
+use super::{State, Stats};
 
 #[component]
-pub fn Ongoing(stats: ReadSignal<Stats>) -> impl IntoView {
+pub fn Ongoing(stats: ReadSignal<Stats>, state: ReadSignal<State>) -> impl IntoView {
 	view! {
 		<div class="stats_ongoing_container">
 			<div class="item" style="right: calc(50vw + 3rem)">
 				<span
-					class="value"
+					class=move || {
+						let mut c = String::from("value");
+						if state.get() == State::Completed {
+							c.push_str(" completed");
+						}
+						c
+					}
 					style=move || {
 						dynamic_style::wpm::gradient(stats.get().wpm())
 					}

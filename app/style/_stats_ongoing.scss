@@ -22,11 +22,34 @@
 			font-size: 2rem;
 		}
 
+		.completed {
+			animation: 2s linear popFade;
+		}
+
 		.unit {
 			font-family: "Sono", monospace;
 			font-size: 1.25rem;
 
 			color: hsl(0, 0%, 70%);
 		}
+	}
+}
+
+@keyframes popFade {
+	0% {
+		transform: scale(1);
+		text-shadow: none;
+	}
+	10% {
+		transform: scale(1.2);
+		text-shadow:
+			0 0 0.3rem hsla(300, 50%, 75%, 50%),
+			0 0 0.6rem hsla(300, 50%, 75%, 40%),
+			0 0 0.9rem hsla(300, 50%, 75%, 30%),
+			0 0 1.2rem hsla(300, 50%, 75%, 20%);
+	}
+	100% {
+		transform: scale(1);
+		text-shadow: none;
 	}
 }
