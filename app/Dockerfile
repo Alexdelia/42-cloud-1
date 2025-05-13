@@ -10,18 +10,15 @@ RUN nix \
 	--experimental-features 'nix-command flakes' \
 	build
 
-RUN mkdir /tmp/nix-store-closure
-RUN cp -R $(nix-store -qR result/) /tmp/nix-store-closure
-RUN echo $(nix-store -q result) > /tmp/nix-store-target
+RUN mkdir -p /tmp/scratch/nix/store
+RUN cp -R $(nix-store -qR result/) /tmp/scratch/nix/store
+RUN ln -s "$(nix-store -q result/)" /tmp/scratch/app
 
+####################################################################
 
-# FROM scratch AS runtime
-FROM nixos/nix:latest AS runtime
+FROM scratch AS runtime
 
-COPY --from=builder /tmp/nix-store-closure /nix/store
-COPY --from=builder /tmp/nix-store-target /tmp/nix-store-target
-RUN ln -s /nix/store/$(cat /tmp/nix-store-target) /app
-RUN rm /tmp/nix-store-target
+COPY --from=builder /tmp/scratch /
 
 WORKDIR /app
 
