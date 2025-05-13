@@ -11,14 +11,19 @@ RUN nix \
 	build
 
 RUN mkdir -p /tmp/scratch/nix/store
-RUN cp -R $(nix-store -qR result/) /tmp/scratch/nix/store
+RUN cp -r $(nix-store -qR result/) /tmp/scratch/nix/store
 RUN ln -s "$(nix-store -q result/)" /tmp/scratch/app
+
+RUN mkdir -p /tmp/scratch/etc/ssl/certs
+RUN cp "$SSL_CERT_FILE" /tmp/scratch/etc/ssl/certs/ca-bundle.crt
 
 ####################################################################
 
 FROM scratch AS runtime
 
 COPY --from=builder /tmp/scratch /
+
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt
 
 WORKDIR /app
 
