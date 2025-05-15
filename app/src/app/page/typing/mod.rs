@@ -71,31 +71,33 @@ pub fn Typing() -> impl IntoView {
 	);
 
 	view! {
-		<div class=move || {
-			let mut c = String::from("page_typing_container");
-			if state.get() == State::Completed {
-				c.push_str(" page_typing_container_completed");
-			}
-			c
-		}>
+		<div class="page_typing_container">
 			<Suspense fallback=move || {
 				view! { <span class="loader" /> }
 			}>
 				<Show when=move || {
 					quote.get().map(|q| q.is_ok()).unwrap_or(false)
 				}>
-					<nav::Stats user_uuid=user_uuid />
+					<div class=move || {
+						let mut c = String::from("page_typing_container");
+						if state.get() == State::Completed {
+							c.push_str(" page_typing_container_completed");
+						}
+						c
+					}>
+						<nav::Stats user_uuid=user_uuid />
 
-					<stats::Ongoing stats=stats state=state />
+						<stats::Ongoing stats=stats state=state />
 
-					<field::Field quote=quote index=index />
+						<field::Field quote=quote index=index />
 
-					<progress::Progress
-						value=index
-						max=quote.get().expect("err").expect("err").text.len()
-					/>
+						<progress::Progress
+							value=index
+							max=quote.get().expect("err").expect("err").text.len()
+						/>
 
-					<origin::Origin quote=quote />
+						<origin::Origin quote=quote />
+					</div>
 				</Show>
 			</Suspense>
 		</div>

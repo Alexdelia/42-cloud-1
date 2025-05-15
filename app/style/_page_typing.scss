@@ -16,6 +16,17 @@
 }
 
 .page_typing_container_completed {
+	width: 100vw;
+	height: 100vh;
+
+	margin: 0;
+	padding: 0;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
 	animation: 2s linear innerPopFade;
 }
 
@@ -24,11 +35,7 @@
 		box-shadow: none;
 	}
 	10% {
-		box-shadow:
-			0 0 0.3rem hsla(300, 50%, 75%, 50%),
-			0 0 0.6rem hsla(300, 50%, 75%, 40%),
-			0 0 0.9rem hsla(300, 50%, 75%, 30%),
-			0 0 1.2rem hsla(300, 50%, 75%, 20%);
+		box-shadow: inset 0 0 3rem rgba(255, 255, 255, 0.5);
 	}
 	100% {
 		box-shadow: none;
