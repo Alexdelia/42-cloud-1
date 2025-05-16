@@ -13,6 +13,7 @@
     ./user.nix
 
     ./docker.nix
+    ./nginx.nix
   ];
 
   nix = {
