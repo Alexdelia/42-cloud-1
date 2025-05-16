@@ -1,6 +1,10 @@
 # version control
 .git
 
+# docker
+Dockerfile
+docker-compose.yml
+
 # nix
 # build output
 result

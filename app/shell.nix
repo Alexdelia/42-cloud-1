@@ -67,5 +67,7 @@ in
         alias watch="cargo leptos watch"
 
         alias fmt="nix fmt"
+
+        alias deploy="DOCKER_HOST='ssh://alex@cloud-1' docker compose up --detach"
       '';
   }

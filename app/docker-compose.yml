@@ -4,7 +4,7 @@
 
 services:
   app:
-    # not defining `image` section as long as not pushing to registry
+    image: ${PROJECT_NAME}-app
 
     # https://docs.docker.com/reference/compose-file/build/
     build:
