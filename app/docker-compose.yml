@@ -42,7 +42,7 @@ services:
       POSTGRES_DB: ${PROJECT_NAME}
 
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
 
     # act only as "type documentation", see https://docs.docker.com/reference/dockerfile/#expose
     # it does not "publish" the port to the host
@@ -63,3 +63,6 @@ services:
       retries: 5
 
     restart: unless-stopped
+
+volumes:
+  db:
