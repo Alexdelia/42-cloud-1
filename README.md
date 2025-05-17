@@ -6,17 +6,7 @@
 </h1>
 
 <!-- preview -->
-<p align="center">
-	<video
-		width="42%"
-		alt="website video preview"
-		autoplay
-		loop
-		muted
-		playsinline
-		src="https://raw.githubusercontent.com/Alexdelia/42-cloud-1/main/preview.mp4"
-	/>
-</p>
+https://github.com/user-attachments/assets/876e10c5-ec19-4a67-af74-be3936e08ebf
 
 <!-- badges -->
 <p align="center">
