@@ -7,10 +7,15 @@
 
 <!-- preview -->
 <p align="center">
-	<video width="42%" autoplay loop muted playsinline>
-		<source src="https://raw.githubusercontent.com/Alexdelia/42-cloud-1/main/preview.mp4" type="video/mp4">
-		Your browser does not support the video tag to be able to see the preview.
-	</video>
+	<video
+		width="42%"
+		alt="website video preview"
+		autoplay
+		loop
+		muted
+		playsinline
+		src="https://raw.githubusercontent.com/Alexdelia/42-cloud-1/main/preview.mp4"
+	/>
 </p>
 
 <!-- badges -->
