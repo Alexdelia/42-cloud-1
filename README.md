@@ -44,7 +44,7 @@
 	42
 		<img
 			alt="42"
-			height="21rem"
+			height="16rem"
 			src="https://simpleicons.org/icons/42.svg"
 		/>
 	</a>
@@ -58,7 +58,7 @@
 			rust
 			<img
 				alt="rust"
-				height="21rem"
+				height="16rem"
 				src="https://simpleicons.org/icons/rust.svg"
 			/>
 		</a>
@@ -67,8 +67,8 @@
 			sass
 			<img
 				alt="sass"
-				height="21rem"
-				src="https://simpleicons.org/icons/sass.svg"
+				height="16rem"
+				src="https://raw.githubusercontent.com/dheereshagrwal/coloured-icons/refs/heads/master/public/logos/technology/sass/sass-wordmark.svg"
 			/>
 		</a>
 		for styling.
@@ -79,8 +79,8 @@
 			leptos
 			<img
 				alt="leptos"
-				height="21rem"
-				src="https://simpleicons.org/icons/leptos.svg"
+				height="16rem"
+				src="https://leptos.dev/images/leptos_sphere.svg"
 			/>
 		</a>
 		.
@@ -91,8 +91,8 @@
 			nix
 			<img
 				alt="nix"
-				height="21rem"
-				src="https://simpleicons.org/icons/nixos.svg"
+				height="16rem"
+				src="https://raw.githubusercontent.com/dheereshagrwal/coloured-icons/refs/heads/master/public/logos/technology/nixos/nixos.svg"
 			/>
 		</a>
 		.
@@ -105,8 +105,8 @@
 		NixOS
 		<img
 			alt="nix"
-			height="21rem"
-			src="https://simpleicons.org/icons/nixos.svg"
+			height="16rem"
+			src="https://raw.githubusercontent.com/dheereshagrwal/coloured-icons/refs/heads/master/public/logos/technology/nixos/nixos.svg"
 		/>
 	</a>
 	configured entirely with
@@ -114,8 +114,8 @@
 		nix flakes
 		<img
 			alt="nix"
-			height="21rem"
-			src="https://simpleicons.org/icons/nixos.svg"
+			height="16rem"
+			src="https://raw.githubusercontent.com/dheereshagrwal/coloured-icons/refs/heads/master/public/logos/technology/nixos/nixos.svg"
 		/>
 	</a>
 	.
