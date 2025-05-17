@@ -68,6 +68,6 @@ in
 
         alias fmt="nix fmt"
 
-        alias deploy="DOCKER_HOST='ssh://alex@cloud-1' docker compose up --detach"
+        alias deploy="DOCKER_HOST='ssh://alex@tust.adelille.rocks' docker compose up --detach"
       '';
   }
