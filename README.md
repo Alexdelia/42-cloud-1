@@ -2,7 +2,7 @@
 <h1>
 	<a href="https://tust.adelille.rocks">
 		tust.adelille.rocks
-	</a>
+	</a> (down)
 </h1>
 
 <!-- preview -->
